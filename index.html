@@ -8,7 +8,7 @@
 		<script type="text/javascript" src="script/cola.js"></script>
 		<script type="text/javascript" src="script/procesador.js"></script>
 		<script type="text/javascript" src="script/recursos.js"></script>
-		<script type="text/javascript" src="script/script.js"></script>		
+		<script type="text/javascript" src="script/script.js"></script>
 		<link href="estilos/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
 		<link href="estilos/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
 		<script src="estilos/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
@@ -22,77 +22,80 @@
 	</head>
 	<body>
 		<div>
-			<h1>Planificación Round-Robin</h1>	
+			<h1>Planificación Round-Robin</h1>
 		</div>
-		
+		<div class="container-fluid">
+			<h3>Agregar proceso</h3>
+			<div class ="row">
+				<form action="">
+					<div class="form-group form-group-sm container">
+						<table class="table">
+							<thead>
+								<tr>
+									<th><label for="nombre" class="col-sm-2 control-label">Nombre</label></th>
+									<th><label for="recurso" class="col-sm-2 control-label">Recurso</label></th>
+									<th><label for="tiempo" class="col-sm-2 control-label">Tiempo</label></th>
+									<th><label for="procesador" class="col-sm-2 control-label">Procesador</label></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input type="text" class="form-control input-sm" id="nombre" placeholder="Nombre Proceso" disabled ></td>
+									<td>
+											<select class="form-control input-sm" id="recurso" >
+												<option value="Impresora">Impresora</option>
+												<option value="Teclado">Teclado</option>
+												<option value="Mouse">Mouse</option>
+												<option value="Otro">Otro</option>
+											</select>
+									</td>
+									<td><input type="text" class="form-control input-sm" id="tiempo" placeholder="Tiempo de Proceso"></td>
+									<td>
+										<select class="form-control input-sm" id="procesador" >
+											<option value="procesador1">Procesador 1</option>
+											<option value="procesador2">Procesador 2</option>
+											<option value="procesador3">Procesador 3</option>
+										</select>
+									</td>
+									<td><button type="button" class="btn btn-default btn-sm" id="crear">Crear</button></td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="row">
+							<div class="col-md-6">
+								<button type="button" class="btn btn-default btn-sm" id="ejecutar">Ejecutar</button>
+							</div>
+							<div class="col-md-6">
+								<button type="button" class="btn btn-danger btn-sm" id="interrumpir" disabled>Interrumpir</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 		<div class ="container-fluid">
 			<h3>Procesador 1</h3>
 			 <div class ="row">
-				<div class="separador jumbotron">	
-			 	<!-- formulario 1 -->
-				<div class="col-md-4 formulario">
-					<h4 style="margin-left:-70px">Proceso</h4>
-					<form action="" class="form-horizontal">
-						<div class="form-group form-group-sm">
-							<label for="nombre1" class="col-sm-2 control-label">Nombre</label>
-							<div class="col-sm-6">
-								<input type="text" class="form-control input-sm" id="nombre1" placeholder="Nombre Proceso" disabled >	
-							</div>
+				<div class="separador jumbotron">
+				<!-- __________________procesador 1_______________________________-->
+					<div class="row">
+						<div class="col-xs-2">
+							<h4>Tiempo:</h4>
+							<h4 id="cronometro1">0</h4>
 						</div>
-						<div class="form-group form-group-sm">
-							<label for="recurso1" class="col-sm-2 control-label">Recurso</label>
-							<div class="col-sm-6">
-								<select class="form-control input-sm" id="recurso1" >
-									<option value="Impresora">Impresora</option>
-									<option value="Teclado">Teclado</option>
-									<option value="Mouse">Mouse</option>
-									<option value="Otro">Otro</option>
-								</select>	
-							</div>
-						</div>
-						<div class="form-group form-group-sm">
-							<label for="tiempo1" class="col-sm-2 control-label">Tiempo</label>
-							<div class="col-sm-6">
-								<input type="text" class="form-control input-sm" id="tiempo1" placeholder="Tiempo de Proceso">	
-							</div>
-						</div>	
-							<div class="col-sm-6 boton">
-								<button type="button" class="btn btn-default btn-sm" id="crear1">Crear</button>
-							</div>						
-					</form>					
-				</div>
-				
-				<!-- __________________procesador 1______________________________________________-->
-				<div class="contenedor">
 
-					<div class="row">
-						<div class="col-md-2">
-							<button type="button" class="btn btn-default btn-sm" id="ejecutar1">Ejecutar</button>	
-						</div>
-						<div class="col-md-2">
-							<button type="button" class="btn btn-danger btn-sm" id="interrumpir1" disabled>Interrumpir</button>	
-						</div>	
-						<div class="col-md-4">
-							<label>Tiempo:</label>
-							<br>
-							<label id="cronometro1" >0</label>
-						</div>
-												
-					</div>
-					
-					<div class="procesador">
-					<div class="row">
-						<div style="float:left">
+						<div class="col-xs-2">
 							<h4>CPU</h4>
 							<h4 id="rendimientoCPU1">0%</h4>
-						<div class="cpu">
-							<!-- CPU -->
-							<table class="table" id="cpu1">
-							</table>
+							<div class="cpu">
+								<!-- CPU -->
+								<table class="table" id="cpu1">
+								</table>
+							</div>
 						</div>
-						</div>
-						
-						<div style="float:left">
+
+						<div class="col-xs-2">
 							<h4>Listos</h4>
 							<div class="cola1">
 								<!-- Listos -->
@@ -100,8 +103,8 @@
 								</table>
 							</div>
 						</div>
-						
-						<div style="float:left">
+
+						<div class="col-xs-2">
 							<h4>Bloqueados</h4>
 							<div class="cola1">
 								<!-- Bloqueados -->
@@ -109,88 +112,38 @@
 								</table>
 							</div>
 						</div>
-						
-						<div style="float:left">
+
+						<div class="col-xs-2">
 							<h4>Suspendidos</h4>
 							<div class="cola1">
 								<!-- suspendidos -->
 								<table class="table" id="suspendidos1">
 								</table>
+							</div>
 						</div>
-						</div>
-					
-						<div style="float:left">
+
+						<div class="col-xs-2">
 						<h4>Terminados</h4>
 							<div class="cola1">
 								<!-- terminados -->
 								<table class="table" id="terminados1">
 								</table>
-						</div>
-
-						</div>
-
+							</div>
 						</div>
 					</div>
 				</div>
-				</div>
-				
+			</div>
+
 				<h3>Procesador 2</h3>
 			 <div class ="row">
-				<div class="separador jumbotron">	
-			 	<!-- formulario 1 -->
-				<div class="col-md-4 formulario">
-					<h4 style="margin-left:-70px">Proceso</h4>
-					<form action="" class="form-horizontal">
-						<div class="form-group form-group-sm">
-							<label for="nombre2" class="col-sm-2 control-label">Nombre</label>
-							<div class="col-sm-6">
-								<input type="text" class="form-control input-sm" id="nombre2" placeholder="Nombre Proceso" disabled >	
-							</div>
-						</div>
-						<div class="form-group form-group-sm">
-							<label for="recurso2" class="col-sm-2 control-label">Recurso</label>
-							<div class="col-sm-6">
-								<select class="form-control input-sm" id="recurso2" >
-									<option value="Impresora">Impresora</option>
-									<option value="Teclado">Teclado</option>
-									<option value="Mouse">Mouse</option>
-									<option value="Otro">Otro</option>
-								</select>	
-							</div>
-						</div>
-						<div class="form-group form-group-sm">
-							<label for="tiempo2" class="col-sm-2 control-label">Tiempo</label>
-							<div class="col-sm-6">
-								<input type="text" class="form-control input-sm" id="tiempo2" placeholder="Tiempo de Proceso">	
-							</div>
-						</div>	
-							<div class="col-sm-6 boton">
-								<button type="button" class="btn btn-default btn-sm" id="crear2">Crear</button>
-							</div>						
-					</form>					
-				</div>
-				
-				<!-- __________________procesador 1______________________________________________-->
-				<div class="contenedor">
-
+				<div class="separador jumbotron">
+				<!-- __________________procesador 2______________________________________________-->
 					<div class="row">
-						<div class="col-md-2">
-							<button type="button" class="btn btn-default btn-sm" id="ejecutar2">Ejecutar</button>	
+						<div class="col-xs-2">
+							<h4>Tiempo:</h4>
+							<h4 id="cronometro2">0</h4>
 						</div>
-						<div class="col-md-2">
-							<button type="button" class="btn btn-danger btn-sm" id="interrumpir2" disabled>Interrumpir</button>	
-						</div>	
-						<div class="col-md-4">
-							<label>Tiempo:</label>
-							<br>
-							<label id="cronometro2" >0</label>
-						</div>
-												
-					</div>
-					
-					<div class="procesador">
-					<div class="row">
-						<div style="float:left">
+						<div class="col-xs-2">
 							<h4>CPU</h4>
 							<h4 id="rendimientoCPU2">0%</h4>
 						<div class="cpu">
@@ -199,8 +152,8 @@
 							</table>
 						</div>
 						</div>
-						
-						<div style="float:left">
+
+						<div class="col-xs-2">
 							<h4>Listos</h4>
 							<div class="cola2">
 								<!-- Listos -->
@@ -208,8 +161,8 @@
 								</table>
 							</div>
 						</div>
-						
-						<div style="float:left">
+
+						<div class="col-xs-2">
 							<h4>Bloqueados</h4>
 							<div class="cola2">
 								<!-- Bloqueados -->
@@ -217,8 +170,8 @@
 								</table>
 							</div>
 						</div>
-						
-						<div style="float:left">
+
+						<div class="col-xs-2">
 							<h4>Suspendidos</h4>
 							<div class="cola2">
 								<!-- suspendidos -->
@@ -226,83 +179,29 @@
 								</table>
 						</div>
 						</div>
-					
-						<div style="float:left">
+
+						<div class="col-xs-2">
 						<h4>Terminados</h4>
 							<div class="cola2">
 								<!-- terminados -->
 								<table class="table " id="terminados2">
 								</table>
-						</div>
-
-						</div>
-
+							</div>
 						</div>
 					</div>
 				</div>
-				</div>
-				
-				
-		</div>
+			</div>
 
-		<!-- 3er-->
 			<h3>Procesador 3</h3>
 			 <div class ="row">
-				<div class="separador jumbotron">	
-			 	<!-- formulario 1 -->
-				<div class="col-md-4 formulario">
-					<h4 style="margin-left:-70px">Proceso</h4>
-					<form action="" class="form-horizontal">
-						<div class="form-group form-group-sm">
-							<label for="nombre3" class="col-sm-2 control-label">Nombre</label>
-							<div class="col-sm-6">
-								<input type="text" class="form-control input-sm" id="nombre3" placeholder="Nombre Proceso" disabled >	
-							</div>
-						</div>
-						<div class="form-group form-group-sm">
-							<label for="recurso3" class="col-sm-2 control-label">Recurso</label>
-							<div class="col-sm-6">
-								<select class="form-control input-sm" id="recurso3" >
-									<option value="Impresora">Impresora</option>
-									<option value="Teclado">Teclado</option>
-									<option value="Mouse">Mouse</option>
-									<option value="Otro">Otro</option>
-								</select>	
-							</div>
-						</div>
-						<div class="form-group form-group-sm">
-							<label for="tiempo3" class="col-sm-2 control-label">Tiempo</label>
-							<div class="col-sm-6">
-								<input type="text" class="form-control input-sm" id="tiempo3" placeholder="Tiempo de Proceso">	
-							</div>
-						</div>	
-							<div class="col-sm-6 boton">
-								<button type="button" class="btn btn-default btn-sm" id="crear3">Crear</button>
-							</div>						
-					</form>					
-				</div>
-				
-				<!-- __________________procesador -->
-				<div class="contenedor">
-
+				<div class="separador jumbotron">
+				<!-- __________________procesador 3______________________________________________-->
 					<div class="row">
-						<div class="col-md-2">
-							<button type="button" class="btn btn-default btn-sm" id="ejecutar3">Ejecutar</button>	
+						<div class="col-xs-2">
+							<h4>Tiempo:</h4>
+							<h4 id="cronometro3">0</h4>
 						</div>
-						<div class="col-md-2">
-							<button type="button" class="btn btn-danger btn-sm" id="interrumpir3" disabled>Interrumpir</button>	
-						</div>	
-						<div class="col-md-4">
-							<label>Tiempo:</label>
-							<br>
-							<label id="cronometro3" >0</label>
-						</div>
-												
-					</div>
-					
-					<div class="procesador">
-					<div class="row">
-						<div style="float:left">
+						<div class="col-xs-2">
 							<h4>CPU</h4>
 							<h4 id="rendimientoCPU3">0%</h4>
 						<div class="cpu">
@@ -311,8 +210,8 @@
 							</table>
 						</div>
 						</div>
-						
-						<div style="float:left">
+
+						<div class="col-xs-2">
 							<h4>Listos</h4>
 							<div class="cola3">
 								<!-- Listos -->
@@ -320,8 +219,8 @@
 								</table>
 							</div>
 						</div>
-						
-						<div style="float:left">
+
+						<div class="col-xs-2">
 							<h4>Bloqueados</h4>
 							<div class="cola3">
 								<!-- Bloqueados -->
@@ -329,48 +228,45 @@
 								</table>
 							</div>
 						</div>
-						
-						<div style="float:left">
+
+						<div class="col-xs-2">
 							<h4>Suspendidos</h4>
 							<div class="cola3">
 								<!-- suspendidos -->
 								<table class="table " id="suspendidos3">
 								</table>
+							</div>
 						</div>
-						</div>
-					
-						<div style="float:left">
+
+						<div class="col-xs-2">
 						<h4>Terminados</h4>
 							<div class="cola3">
 								<!-- terminados -->
 								<table class="table " id="terminados3">
 								</table>
-						</div>
-
-						</div>
-
+							</div>
 						</div>
 					</div>
 				</div>
-				</div>
-		</div>
-		
+			</div>
+
 		<!--
 ________espacio para estadísticas ______________________________________________________________________________
-				 -->		
+				 -->
 	<div class="jumbotron">
 	<h2>Diagramas de Gantt</h2>
+	<div style="margin-left:650px;background-image:url('convenciones.png');background-size:105%;width:360px;height:120px"></div>
 		<div class="container-fluid">
 			<!-- diagramas de gant -->
 			<div class="row">
-				
+
 				<div class="col-sm-2">
 					<br><br><br><br><br>
 					<button type="button" class="btn btn-default btn-sm" id="gantt1">Diagrama Gantt procesador 1</button>
 					<br><br>
 				</div>
 				<!--diagrama gant procesador 1-->
-				<div class="col-sm-8" id="dGantt1">	
+				<div class="col-sm-8" id="dGantt1">
 				</div>
 			</div>
 			<!-- diagramas de gant -->
@@ -381,7 +277,7 @@ ________espacio para estadísticas _____________________________________________
 					<br><br>
 				</div>
 				<!--diagrama gant procesador 2-->
-				<div class="col-sm-8" id="dGantt2">	
+				<div class="col-sm-8" id="dGantt2">
 				</div>
 			</div>
 			<!-- diagramas de gant -->
@@ -392,13 +288,13 @@ ________espacio para estadísticas _____________________________________________
 					<br><br>
 				</div>
 				<!--diagrama gant procesador 3-->
-				<div class="col-sm-8" id="dGantt3">	
+				<div class="col-sm-8" id="dGantt3">
 				</div>
 			</div>
 		</div>
 		<br><br>
 	</div>
-	
+
 	<div class="jumbotron">
 	<h2>Rendimiento</h2>
 	<div class="container-fluid">
