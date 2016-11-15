@@ -1,7 +1,7 @@
 var procesador1 = new Procesador(5);
 var procesador2 = new Procesador(5);
 var procesador3 = new Procesador(5);
-var p1=0, p2=0, p3= 0; // variables para llevar la cuenta de los procesos por cada procesador
+var p=0, p1=0, p2=0, p3=0;
 var hilo1,hilo2,hilo3;
 
 
@@ -10,45 +10,38 @@ $(document).ready(function(){
 
 	preestablecer();
 
-	/* Botones para crear procesos */
-	$("#crear1").click(function(){
-		var nombre = $("#nombre1").val();
-		var tiempo = $("#tiempo1").val();
-		var recurso = $("#recurso1").val();
-		var proceso = new Proceso(p1,nombre, tiempo, recurso);
-		procesador1.CrearProceso(proceso);
-			
-		p1++;
+	/* Boton para crear procesos */
+	$("#crear").click(function(){
+		var nombre = $("#nombre").val();
+		var tiempo = $("#tiempo").val();
+		var recurso = $("#recurso").val();
+		var proceso = new Proceso(p, nombre, tiempo, recurso);
+		switch (parseInt($("#sProcesador").val())) {
+			case 1:
+				procesador1.CrearProceso(proceso);
+				p1++;
+				$("#listos1").html(dibujarCola(procesador1.listos));
+				break;
+			case 2:
+				procesador2.CrearProceso(proceso);
+				p2++;
+				$("#listos2").html(dibujarCola(procesador2.listos));
+				break;
+			case 3:
+				procesador3.CrearProceso(proceso);
+				p3++;
+				$("#listos3").html(dibujarCola(procesador3.listos));
+				break;
+		}
+		p++;
 		preestablecer();
-		$("#listos1").html(dibujarCola(procesador1.listos));
-	});
-	$("#crear2").click(function(){
-		var nombre = $("#nombre2").val();
-		var tiempo = $("#tiempo2").val();
-		var recurso = $("#recurso2").val();
-		var proceso = new Proceso(p2,nombre, tiempo, recurso);
-		procesador2.CrearProceso(proceso);
-
-		p2++;
-		preestablecer();
-		$("#listos2").html(dibujarCola(procesador2.listos));
-	});
-	$("#crear3").click(function(){
-		var nombre = $("#nombre3").val();
-		var tiempo = $("#tiempo3").val();
-		var recurso = $("#recurso3").val();
-		var proceso = new Proceso(p3,nombre, tiempo, recurso);
-		procesador3.CrearProceso(proceso);
-
-		p3++;
-		preestablecer();
-		$("#listos3").html(dibujarCola(procesador3.listos));
 	});
 
-	/* botones correr procesadores */
-	$("#ejecutar1").click(function(){
-		$("#ejecutar1").attr("disabled",true);
-		$("#interrumpir1").attr("disabled",false);
+
+	/* boton correr procesadores */
+	$("#ejecutar").click(function(){
+		$("#ejecutar").attr("disabled",true);
+		$("#interrumpir").attr("disabled",false);
 		hilo1 = setInterval(function(){
 			procesador1.CorrerProcesador(recursos);
 			$("#listos1").html(dibujarCola(procesador1.listos));
@@ -60,11 +53,7 @@ $(document).ready(function(){
 			procesador1.CalcularRendimiento();
 			$("#rendimientoCPU1").text(procesador1.rendimientoCPU+"%");
 		},1000);
-	});
 
-	$("#ejecutar2").click(function(){
-		$("#ejecutar2").attr("disabled",true);
-		$("#interrumpir2").attr("disabled",false);
 		hilo2 = setInterval(function(){
 			procesador2.CorrerProcesador(recursos);
 			$("#listos2").html(dibujarCola(procesador2.listos));
@@ -76,11 +65,7 @@ $(document).ready(function(){
 			procesador2.CalcularRendimiento();
 			$("#rendimientoCPU2").text(procesador2.rendimientoCPU+"%");
 		},1000);
-	});
 
-	$("#ejecutar3").click(function(){
-		$("#ejecutar3").attr("disabled",true);
-		$("#interrumpir3").attr("disabled",false);
 		hilo3 = setInterval(function(){
 			procesador3.CorrerProcesador(recursos);
 			$("#listos3").html(dibujarCola(procesador3.listos));
@@ -93,11 +78,12 @@ $(document).ready(function(){
 			$("#rendimientoCPU3").text(procesador3.rendimientoCPU+"%");
 		},1000);
 	});
-	
+
 	/* botones interrumpir procesador */
-	$("#interrumpir1").click(function(){
-		$("#interrumpir1").attr("disabled",true);
-		$("#ejecutar1").attr("disabled",false);
+	$("#interrumpir").click(function(){
+		$("#interrumpir").attr("disabled",true);
+		$("#ejecutar").attr("disabled",false);
+
 		procesador1.DetenerProcesador(recursos);
 		clearInterval(hilo1);
 		$("#listos1").html(dibujarCola(procesador1.listos));
@@ -105,11 +91,7 @@ $(document).ready(function(){
 		$("#bloqueados1").html(dibujarCola(procesador1.bloqueados));
 		$("#terminados1").html(dibujarCola(procesador1.terminados));
 		$("#cpu1").html(dibujarCola(procesador1.CPU));
-	});
 
-	$("#interrumpir2").click(function(){
-		$("#interrumpir2").attr("disabled",true);
-		$("#ejecutar2").attr("disabled",false);
 		procesador2.DetenerProcesador(recursos);
 		clearInterval(hilo2);
 		$("#listos2").html(dibujarCola(procesador2.listos));
@@ -117,11 +99,7 @@ $(document).ready(function(){
 		$("#bloqueados2").html(dibujarCola(procesador2.bloqueados));
 		$("#terminados2").html(dibujarCola(procesador2.terminados));
 		$("#cpu2").html(dibujarCola(procesador2.CPU));
-	});
 
-	$("#interrumpir3").click(function(){
-		$("#interrumpir3").attr("disabled",true);
-		$("#ejecutar3").attr("disabled",false);
 		procesador3.DetenerProcesador(recursos);
 		clearInterval(hilo3);
 		$("#listos3").html(dibujarCola(procesador3.listos));
@@ -153,19 +131,19 @@ $(document).ready(function(){
 	$("#rendimiento1").click(function(){
 		procesador1.CalcularRendimiento();
 		$("#vrendimiento1").html(dibujarRendiminetos(procesador1.rendimientoProcesos));
-		
+
 	});
 
 	$("#rendimiento2").click(function(){
 		procesador2.CalcularRendimiento();
 		$("#vrendimiento2").html(dibujarRendiminetos(procesador2.rendimientoProcesos));
-		
+
 	});
 
 	$("#rendimiento3").click(function(){
 		procesador3.CalcularRendimiento();
 		$("#vrendimiento3").html(dibujarRendiminetos(procesador3.rendimientoProcesos));
-		
+
 	});
 
 });
@@ -176,10 +154,8 @@ $(document).ready(function(){
 
 /* funcion para dar valores por defecto a los campos de los formularios */
 function preestablecer(){
-	$("#nombre1").val("P"+p1);
-	$("#nombre2").val("P"+p2); 
-	$("#nombre3").val("P"+p3); 
-	$("#tiempo1, #tiempo2, #tiempo3").val(10);
+	$("#nombre").val("P"+p);
+	$("#tiempo").val(10 + Math.floor(Math.random() * 20));
 }
 
 function dibujarCola(cola){
@@ -220,73 +196,3 @@ function dibujarRendiminetos(procesos){
 	}
 	return texto;
 }
-
-
-/*var cola1 = new Cola();
-var proceso1 = new Proceso(1, "p1", 5, "Impresora");
-var proceso2 = new Proceso(2, "p2", 5, "Teclado");
-var proceso3 = new Proceso(3, "p3", 5, "Mouse");
-var proceso4 = new Proceso(4, "p1", 5, "Impresora");
-var proceso5 = new Proceso(5, "p2", 5, "Teclado");
-var proceso6 = new Proceso(6, "p3", 5, "Mouse");
-
-
-
-
-procesador1.CrearProceso(proceso1);
-procesador1.CrearProceso(proceso2);
-procesador1.CrearProceso(proceso3);
-
-procesador2.CrearProceso(proceso4);
-procesador2.CrearProceso(proceso5);
-procesador2.CrearProceso(proceso6);
-
-var hilo1 = setInterval(
-	function(){
-		console.log("procesador1");
-		console.log("impresora ",recursos[0].estado);
-		procesador1.CorrerProcesador(recursos);
-	}, 
-	1000);
-var hilo2 = setInterval(
-	function(){
-		console.log("procesador2");
-		console.log("impresora ",recursos[0].estado);
-		procesador2.CorrerProcesador(recursos);
-	}
-	,1000);*/
-
-
-/*var segundo = 0;
-for(var i = 0; i < 20; i++){
-	console.log("segundo ", segundo);
-	procesador1.CorrerProcesador(recursos);	
-	segundo++;
-}
-*/
-
-/*
-var process;
-
-cola1.Listainsertar(proceso1)
-cola1.Listaimprimir();
-
-cola1.Listainsertar(proceso3)
-cola1.Listaimprimir();
-
-cola1.Listainsertar(proceso2)
-cola1.Listaimprimir();
-
-process = cola1.Listaatender()
-console.log(process.nombre)
-cola1.Listaimprimir();
-
-process = cola1.Listaatender()
-console.log(process.nombre)
-cola1.Listaimprimir();
-
-process = cola1.Listaatender()
-console.log(process.nombre)
-cola1.Listaimprimir();
-
-*/

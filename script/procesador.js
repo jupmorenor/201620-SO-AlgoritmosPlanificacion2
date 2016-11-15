@@ -11,7 +11,7 @@ function Procesador(quantum){
 	this.quantum = quantum;
 	this.rendimientoProcesos = [];
 	this.rendimientoCPU = 0;
-
+	this.cant = 0
 	this.CrearProceso = crearProceso;
 	this.CorrerProcesador = correrProcesador;
 	this.DetenerProcesador = detenerProcesador;
@@ -24,10 +24,12 @@ function Procesador(quantum){
 
 function crearProceso(proceso){
 	proceso.q = this.quantum;
+	proceso.pos = this.cant;
 	proceso.qRestante = this.quantum;/////// recalcular quenatum ------------------------------------------------------------------
 	this.listos.Listainsertar(proceso);
 	this.CalcularQuantum();
-	this.estados[proceso.id] = [];
+	this.estados[proceso.pos] = [];
+	this.cant++
 }
 
 /* algoritmo Round Robin */
@@ -67,7 +69,7 @@ function correrProcesador(recursos){
 			// revisar recursos
 			for(var i in recursos){
 				if(recursos[i].nombre == procesoAux.recurso){
-					// si el recurso esta disponible 
+					// si el recurso esta disponible
 					if(recursos[i].estado == 1){
 						this.listos.Listainsertar(procesoAux);
 						this.CalcularQuantum(); /////// recalcular quenatum ------------------------------------------------------------------
@@ -77,7 +79,7 @@ function correrProcesador(recursos){
 					}
 					break;
 				}
-			}	
+			}
 
 
 
@@ -114,7 +116,7 @@ function correrProcesador(recursos){
 			}
 			this.terminados.Listainsertar(procesoAux);
 		}
-		else{ 
+		else{
 			/* si no le queda tiempo de quantum al proceso ( va para la cola de suspendido )*/
 			if(procesoAux.qRestante == 0){
 				/* buscar el recurso y liberarlo */
@@ -154,7 +156,7 @@ function correrProcesador(recursos){
 					}
 					break;
 				}
-			}			
+			}
 		}
 	}
 	this.GuardarEstadosProcesos();
@@ -175,18 +177,18 @@ function detenerProcesador(recursos){
 	}
 }
 
-/* funcion para guardar el estado de cada proceso en un instante dado 
+/* funcion para guardar el estado de cada proceso en un instante dado
 	toca recorrer cada cola */
 function guardarEstadosProcesos(){
-	
+
 	var procesoAux;
 	var contadorAux;
 	/* cola de listos */
 	var colaAux = new Cola();
 	while(!this.listos.Listavacia()){//
 		procesoAux = this.listos.Listaatender();//
-		contadorAux = this.estados[procesoAux.id].length; 
-		this.estados[procesoAux.id][contadorAux] = [this.cronometro, "L"];
+		contadorAux = this.estados[procesoAux.pos].length;
+		this.estados[procesoAux.pos][contadorAux] = [this.cronometro, "L"];
 		colaAux.Listainsertar(procesoAux);
 	}
 	while(!colaAux.Listavacia()){
@@ -197,8 +199,8 @@ function guardarEstadosProcesos(){
 	/* cola de CPU */
 	while(!this.CPU.Listavacia()){//
 		procesoAux = this.CPU.Listaatender();//
-		contadorAux = this.estados[procesoAux.id].length;
-		this.estados[procesoAux.id][contadorAux] = [this.cronometro, "E"];
+		contadorAux = this.estados[procesoAux.pos].length;
+		this.estados[procesoAux.pos][contadorAux] = [this.cronometro, "E"];
 		colaAux.Listainsertar(procesoAux);
 
 	}
@@ -210,8 +212,8 @@ function guardarEstadosProcesos(){
 	/* cola de suspendidos */
 	while(!this.suspendidos.Listavacia()){//
 		procesoAux = this.suspendidos.Listaatender();//
-		contadorAux = this.estados[procesoAux.id].length;
-		this.estados[procesoAux.id][contadorAux] = [this.cronometro, "S"];
+		contadorAux = this.estados[procesoAux.pos].length;
+		this.estados[procesoAux.pos][contadorAux] = [this.cronometro, "S"];
 		colaAux.Listainsertar(procesoAux);
 	}
 	while(!colaAux.Listavacia()){
@@ -222,8 +224,8 @@ function guardarEstadosProcesos(){
 	/* cola de bloqueados */
 	while(!this.bloqueados.Listavacia()){//
 		procesoAux = this.bloqueados.Listaatender();//
-		contadorAux = this.estados[procesoAux.id].length;
-		this.estados[procesoAux.id][contadorAux] = [this.cronometro, "B"];
+		contadorAux = this.estados[procesoAux.pos].length;
+		this.estados[procesoAux.pos][contadorAux] = [this.cronometro, "B"];
 		colaAux.Listainsertar(procesoAux);
 	}
 	while(!colaAux.Listavacia()){
@@ -251,7 +253,7 @@ function calcularrendimiento(){
 		var tiempoRespuesta;
 		var tiempoEspera;
 		var penalizacion;
-		var respuesta; 
+		var respuesta;
 
 		for(var i = 0; i < this.estados.length; i++){
 			var procesoAux = this.BuscarEnTerminados(i);
@@ -261,11 +263,11 @@ function calcularrendimiento(){
 				tiempoEspera = tiempoRespuesta - tiempoProceso;
 				penalizacion = tiempoRespuesta / tiempoProceso;
 				respuesta = 1 / penalizacion;
-				this.rendimientoProcesos[i] = [tiempoProceso, tiempoRespuesta, tiempoEspera, penalizacion, respuesta]; 	
+				this.rendimientoProcesos[i] = [tiempoProceso, tiempoRespuesta, tiempoEspera, penalizacion, respuesta];
 			}
 			else{
 				this.rendimientoProcesos[i] = "-----";
-			}	
+			}
 		}
 
 
@@ -292,8 +294,9 @@ function buscarEnTerminados(id){
 	var proceso = false
 	while(!this.terminados.Listavacia()){
 		procesoAux = this.terminados.Listaatender();
-		if(procesoAux.id == id){
+		if(procesoAux.pos == id){
 			proceso = new Proceso(procesoAux.id, procesoAux.nombre, procesoAux.t, procesoAux.recurso);
+			proceso.pos = procesoAux.pos
 		}
 		colaAux.Listainsertar(procesoAux);
 	}
@@ -333,7 +336,7 @@ function calcularQuantum(){
 			if(procesoAux.q == 0){
 				procesoAux.q = 1;
 				procesoAux.qRestante = 1;
-			
+
 			}
 			this.listos.Listainsertar(procesoAux);
 		}
