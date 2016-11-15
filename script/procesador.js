@@ -263,7 +263,7 @@ function calcularrendimiento(){
 				tiempoEspera = tiempoRespuesta - tiempoProceso;
 				penalizacion = tiempoRespuesta / tiempoProceso;
 				respuesta = 1 / penalizacion;
-				this.rendimientoProcesos[i] = [tiempoProceso, tiempoRespuesta, tiempoEspera, penalizacion, respuesta];
+				this.rendimientoProcesos[i] = [procesoAux.nombre, tiempoProceso, tiempoRespuesta, tiempoEspera, penalizacion, respuesta];
 			}
 			else{
 				this.rendimientoProcesos[i] = "-----";
