@@ -1,8 +1,10 @@
 var procesador1 = new Procesador(5);
 var procesador2 = new Procesador(5);
 var procesador3 = new Procesador(5);
-var p=0, p1=0, p2=0, p3=0;
+var p=0; p1=0, p2=0, p3= 0; // variables para llevar la cuenta de los procesos por cada procesador
 var hilo1,hilo2,hilo3;
+var velEjecucion = 0;//parseInt($("#velocidad").val()) * 1000
+
 
 
 /* --------------Main--------------------- */
@@ -10,7 +12,7 @@ $(document).ready(function(){
 
 	preestablecer();
 
-	/* Boton para crear procesos */
+	/* Botones para crear procesos */
 	$("#crear").click(function(){
 		var nombre = $("#nombre").val();
 		var tiempo = $("#tiempo").val();
@@ -18,30 +20,33 @@ $(document).ready(function(){
 		var proceso = new Proceso(p, nombre, tiempo, recurso);
 		switch (parseInt($("#sProcesador").val())) {
 			case 1:
+				proceso.pos = p1;
 				procesador1.CrearProceso(proceso);
-				p1++;
 				$("#listos1").html(dibujarCola(procesador1.listos));
+				p1++;
 				break;
 			case 2:
+				proceso.pos = p2;
 				procesador2.CrearProceso(proceso);
-				p2++;
 				$("#listos2").html(dibujarCola(procesador2.listos));
+				p2++;
 				break;
 			case 3:
+				proceso.pos = p3;
 				procesador3.CrearProceso(proceso);
-				p3++;
 				$("#listos3").html(dibujarCola(procesador3.listos));
 				break;
 		}
 		p++;
 		preestablecer();
+
 	});
 
-
-	/* boton correr procesadores */
+	/* botones correr procesadores */
 	$("#ejecutar").click(function(){
 		$("#ejecutar").attr("disabled",true);
 		$("#interrumpir").attr("disabled",false);
+		velEjecucion = parseFloat($("#velocidad").val()) * 1000
 		hilo1 = setInterval(function(){
 			procesador1.CorrerProcesador(recursos);
 			$("#listos1").html(dibujarCola(procesador1.listos));
@@ -52,7 +57,7 @@ $(document).ready(function(){
 			$("#cronometro1").text(procesador1.cronometro);
 			procesador1.CalcularRendimiento();
 			$("#rendimientoCPU1").text(procesador1.rendimientoCPU+"%");
-		},1000);
+		},velEjecucion);
 
 		hilo2 = setInterval(function(){
 			procesador2.CorrerProcesador(recursos);
@@ -64,7 +69,7 @@ $(document).ready(function(){
 			$("#cronometro2").text(procesador2.cronometro);
 			procesador2.CalcularRendimiento();
 			$("#rendimientoCPU2").text(procesador2.rendimientoCPU+"%");
-		},1000);
+		},velEjecucion);
 
 		hilo3 = setInterval(function(){
 			procesador3.CorrerProcesador(recursos);
@@ -76,14 +81,14 @@ $(document).ready(function(){
 			$("#cronometro3").text(procesador3.cronometro);
 			procesador3.CalcularRendimiento();
 			$("#rendimientoCPU3").text(procesador3.rendimientoCPU+"%");
-		},1000);
+		},velEjecucion);
+		console.log(velEjecucion)
 	});
 
 	/* botones interrumpir procesador */
 	$("#interrumpir").click(function(){
 		$("#interrumpir").attr("disabled",true);
 		$("#ejecutar").attr("disabled",false);
-
 		procesador1.DetenerProcesador(recursos);
 		clearInterval(hilo1);
 		$("#listos1").html(dibujarCola(procesador1.listos));
@@ -108,7 +113,6 @@ $(document).ready(function(){
 		$("#terminados3").html(dibujarCola(procesador3.terminados));
 		$("#cpu3").html(dibujarCola(procesador3.CPU));
 	});
-
 
 	/* botones diagrmas de gantt*/
 	$("#gantt1").click(function(){
@@ -155,7 +159,7 @@ $(document).ready(function(){
 /* funcion para dar valores por defecto a los campos de los formularios */
 function preestablecer(){
 	$("#nombre").val("P"+p);
-	$("#tiempo").val(10 + Math.floor(Math.random() * 20));
+	$("#tiempo").val(5 + Math.floor(Math.random() * 20));
 }
 
 function dibujarCola(cola){
@@ -178,7 +182,6 @@ function dibujarProceso(proceso){
 	var procesoAux ="<tr>";
 	procesoAux += "<td>"+proceso.nombre+"</td>";
 	procesoAux += "<td>"+"T:"+proceso.tiempo+"</td>";
-	procesoAux += "<td>"+"Q:"+proceso.qRestante+"</td>";
 	procesoAux += "<td>"+proceso.recurso+"</td>";
 	procesoAux += "</tr>";
 	return procesoAux;
@@ -188,7 +191,7 @@ function dibujarProceso(proceso){
 function dibujarRendiminetos(procesos){
 	var texto ="<tr><td>Nombre</td><td>Tiempo P</td><td>Tiempo Respuesta</td><td>Tiempo Espera</td><td>Penalización</td><td>Proporción Respuesta</td></tr>";
 	for(var i = 0; i < procesos.length; i++){
-		texto +="<tr>"//"<td>P"+procesos[i][0]+"</td>";
+		texto +="<tr>"//"<td>P"+i+"</td>";
 		for(var j = 0; j < procesos[i].length; j++){
 			texto += "<td>"+procesos[i][j]+"</td>";
 		}

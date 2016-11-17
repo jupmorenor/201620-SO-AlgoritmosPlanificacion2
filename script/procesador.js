@@ -11,7 +11,7 @@ function Procesador(quantum){
 	this.quantum = quantum;
 	this.rendimientoProcesos = [];
 	this.rendimientoCPU = 0;
-	this.cant = 0
+
 	this.CrearProceso = crearProceso;
 	this.CorrerProcesador = correrProcesador;
 	this.DetenerProcesador = detenerProcesador;
@@ -24,12 +24,9 @@ function Procesador(quantum){
 
 function crearProceso(proceso){
 	proceso.q = this.quantum;
-	proceso.pos = this.cant;
 	proceso.qRestante = this.quantum;/////// recalcular quenatum ------------------------------------------------------------------
-	this.listos.Listainsertar(proceso);
-	this.CalcularQuantum();
+	this.listos.Listainsertar2(proceso);
 	this.estados[proceso.pos] = [];
-	this.cant++
 }
 
 /* algoritmo Round Robin */
@@ -43,8 +40,7 @@ function correrProcesador(recursos){
 			procesoAux = this.suspendidos.Listaatender();
 			procesoAux.qRestante--;
 			if(procesoAux.qRestante == 0){ // si no le queda tiempo de espera en la cola de suspendidos
-				this.listos.Listainsertar(procesoAux);
-				this.CalcularQuantum(); /////// recalcular quenatum --------------------------------------------------------------------
+				this.listos.Listainsertar2(procesoAux);
 			}
 			else{ // si tiene que esperar aún en la cola de suspendidos
 				colaAux.Listainsertar(procesoAux);
@@ -71,8 +67,7 @@ function correrProcesador(recursos){
 				if(recursos[i].nombre == procesoAux.recurso){
 					// si el recurso esta disponible
 					if(recursos[i].estado == 1){
-						this.listos.Listainsertar(procesoAux);
-						this.CalcularQuantum(); /////// recalcular quenatum ------------------------------------------------------------------
+						this.listos.Listainsertar2(procesoAux);
 					}// si el recurso no esta disponible
 					else{
 						colaAux.Listainsertar(procesoAux);
@@ -104,7 +99,6 @@ function correrProcesador(recursos){
 	if(!this.CPU.Listavacia()){
 		var procesoAux = this.CPU.Listaatender();
 		procesoAux.tiempo --;
-		procesoAux.qRestante --;
 		/* si no le queda tiempo de ejecución al proceso va a la cola de terminados*/
 		if(procesoAux.tiempo == 0){
 			/* buscar el recurso y liberarlo */
@@ -116,23 +110,9 @@ function correrProcesador(recursos){
 			}
 			this.terminados.Listainsertar(procesoAux);
 		}
-		else{
-			/* si no le queda tiempo de quantum al proceso ( va para la cola de suspendido )*/
-			if(procesoAux.qRestante == 0){
-				/* buscar el recurso y liberarlo */
-				for(var i in recursos){
-					if(recursos[i].nombre == procesoAux.recurso){
-						recursos[i].estado = 1;
-						break;
-					}
-				}
-				procesoAux.qRestante = 2; //  ojojojojojojojojojojo este tiempo es el que va a durar en espera en suspendido
-				this.suspendidos.Listainsertar(procesoAux);
-			}
-			/* si el proceso debe continuar en ejecucion regresa a la cola de CPU */
-			else{
-				this.CPU.Listainsertar(procesoAux);
-			}
+		else{// si el proceso debe continuar en CPU
+
+			this.CPU.Listainsertar(procesoAux);
 		}
 	}
 
@@ -151,7 +131,6 @@ function correrProcesador(recursos){
 						recursos[i].estado = 0;
 					}/* si el recurso no esta disponible*/
 					else{
-						procesoAux.qRestante = 2; //  ojojojojojojojojojojo este tiempo es el que va a durar en espera en bloqueados
 						this.bloqueados.Listainsertar(procesoAux);
 					}
 					break;
@@ -193,7 +172,7 @@ function guardarEstadosProcesos(){
 	}
 	while(!colaAux.Listavacia()){
 		procesoAux = colaAux.Listaatender();
-		this.listos.Listainsertar(procesoAux); //
+		this.listos.Listainsertar2(procesoAux); //
 	}
 
 	/* cola de CPU */

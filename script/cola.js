@@ -13,6 +13,7 @@
 	this.Listaimprimir = imprimir;
 	this.ListagetRaiz = getRaiz;
 	this.ListagetTam = getTam;
+	this.Listainsertar2 = insertar2;
 	
  }
  
@@ -25,8 +26,45 @@ function vacia(){
 		return false;
 	}
  }
+
+ // Metodo insertar ordenado
+ function insertar2(proceso){
+
+ 		if(this.nodoRaiz == null){
+ 			this.Listainsertar(proceso);
+ 		}
+ 		else{
+ 			if(parseInt(proceso.tiempo) >= parseInt(this.nodoFondo.proceso.tiempo)){
+ 				this.Listainsertar(proceso);
+ 			}
+ 			else{
+ 				var colaAux = new Cola();
+ 				var procesoAux;
+ 				while(!this.Listavacia()){
+ 					procesoAux = this.Listaatender();
+ 					if(parseInt(proceso.tiempo) < parseInt(procesoAux.tiempo)){
+ 						colaAux.Listainsertar(proceso);
+ 						colaAux.Listainsertar(procesoAux);
+ 						break;
+ 					}	
+ 					else{
+ 						colaAux.Listainsertar(procesoAux);
+ 					}
+ 				}
+ 				while(!this.Listavacia()){
+ 					procesoAux = this.Listaatender();
+ 					colaAux.Listainsertar(procesoAux);
+ 				}
+ 				while(!colaAux.Listavacia()){
+ 					procesoAux = colaAux.Listaatender();
+ 					this.Listainsertar(procesoAux);
+ 				}
+ 			}
+ 			this.tam++;
+ 	 	}
+ }
  
- //Método insertar
+ //Metodo insertar
  function insertar(proceso){
 	var nuevo = new Nodo();
 	
@@ -90,4 +128,5 @@ function vacia(){
  function getTam(){
 	return this.tam;
  }
+ 
  

@@ -13,16 +13,18 @@
 		<link href="estilos/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
 		<script src="estilos/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
 		<link href="estilos/miEstilo.css" rel="stylesheet">
+
+		<!--archivos de gantt-->
 		<script type="text/javascript" src="gantt/d3.v3.min.js"></script>
 		<script type="text/javascript" src="gantt/gantt-chart-d3.js"></script>
 		<script type="text/javascript" src="gantt/miGantt.js"></script>
 		<link href="gantt/estilosGantt.css" rel="stylesheet">
 
-		<title>Algoritmo Round Robin</title>
+		<title>Algoritmo SJF</title>
 	</head>
 	<body>
-		<div>
-			<h1>Planificación Round-Robin</h1>
+		<div class="jumbotron	">
+			<h1>Algoritmo SJF</h1>
 		</div>
 		<div class="container-fluid">
 			<h3>Agregar proceso</h3>
@@ -37,6 +39,7 @@
 									<th><label for="tiempo" class="col-sm-2 control-label">Tiempo</label></th>
 									<th><label for="sProcesador" class="col-sm-2 control-label">Procesador</label></th>
 									<th></th>
+									<th><label for="velocidad" class="col-sm-2 control-label">Velocidad</label></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -58,212 +61,289 @@
 											<option value="3">Procesador 3</option>
 										</select>
 									</td>
-									<td><button type="button" class="btn btn-default btn-sm" id="crear">Crear</button></td>
+									<td><button type="button" class="btn btn-primary btn-sm" id="crear">Crear</button></td>
+									<td><input type="number" class="form-control input-sm" id="velocidad" value="1" min="0.5" max="2" step="0.1"></td>
 								</tr>
 							</tbody>
 						</table>
 						<div class="row">
 							<div class="col-md-6">
-								<button type="button" class="btn btn-default btn-sm" id="ejecutar">Ejecutar</button>
+								<button type="button" class="btn btn-success btn-sm" id="ejecutar">Ejecutar</button>
 							</div>
 							<div class="col-md-6">
 								<button type="button" class="btn btn-danger btn-sm" id="interrumpir" disabled>Interrumpir</button>
+							</div>
+							<div class="col-md-6">
+
 							</div>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>
-		<div class ="container-fluid">
-			<h3>Procesador 1</h3>
+
+		<div class="page-header"></div>
+		<!--
+			fila para ubicar los procesadores
+		 -->
+		<div class="container-fluid">
 			 <div class ="row">
-				<div class="separador jumbotron">
-				<!-- __________________procesador 1_______________________________-->
+
+<!-- __________________procesador 1______________________________________________-->
+				<div class="col-md-4 contenedor">
+
 					<div class="row">
-						<div class="col-xs-2">
-							<h4>Tiempo:</h4>
-							<h4 id="cronometro1">0</h4>
+						<div class="col-md-4">
+							<h4>Procesador 1</h4>
+						</div>
+						<div class="col-md-4">
+							<label>Tiempo:</label>
+							<br>
+							<label id="cronometro1" >0</label>
 						</div>
 
-						<div class="col-xs-2">
+					</div>
+
+					<div class="procesador">
+					<div class="row">
+						<div class="col-md-4">
+
+						</div>
+						<div class="col-md-2">
 							<h4>CPU</h4>
+						</div>
+						<div class="col-md-2">
 							<h4 id="rendimientoCPU1">0%</h4>
-							<div class="cpu">
-								<!-- CPU -->
-								<table class="table" id="cpu1">
-								</table>
-							</div>
 						</div>
 
-						<div class="col-xs-2">
+					</div>
+					<div class="row">
+						<div class="cpu">
+							<!-- CPU -->
+							<table class="table table-striped" id="cpu1">
+							</table>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-6">
 							<h4>Listos</h4>
 							<div class="cola1">
 								<!-- Listos -->
-								<table class="table" id="listos1">
+								<table class="table table-striped" id="listos1">
 								</table>
 							</div>
-						</div>
 
-						<div class="col-xs-2">
+						</div>
+						<div class="col-sm-6">
 							<h4>Bloqueados</h4>
 							<div class="cola1">
 								<!-- Bloqueados -->
-								<table class="table" id="bloqueados1">
-								</table>
-							</div>
-						</div>
-
-						<div class="col-xs-2">
-							<h4>Suspendidos</h4>
-							<div class="cola1">
-								<!-- suspendidos -->
-								<table class="table" id="suspendidos1">
-								</table>
-							</div>
-						</div>
-
-						<div class="col-xs-2">
-						<h4>Terminados</h4>
-							<div class="cola1">
-								<!-- terminados -->
-								<table class="table" id="terminados1">
+								<table class="table table-striped" id="bloqueados1">
 								</table>
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
 
-				<h3>Procesador 2</h3>
-			 <div class ="row">
-				<div class="separador jumbotron">
-				<!-- __________________procesador 2______________________________________________-->
 					<div class="row">
-						<div class="col-xs-2">
-							<h4>Tiempo:</h4>
-							<h4 id="cronometro2">0</h4>
+						<div class="col-sm-6">
+							<h4>Suspendidos</h4>
+							<div class="cola1">
+								<!-- suspendidos -->
+								<table class="table table-striped" id="suspendidos1">
+								</table>
+							</div>
+
 						</div>
-						<div class="col-xs-2">
+						<div class="col-sm-6">
+							<h4>Terminados</h4>
+							<div class="cola1">
+								<!-- terminados -->
+								<table class="table table-striped" id="terminados1">
+								</table>
+
+							</div>
+						</div>
+					</div>
+					</div>
+				</div>
+
+<!-- __________________procesador 2______________________________________________-->
+				<div class="col-md-4 contenedor">
+
+					<div class="row">
+						<div class="col-md-4">
+							<h4>Procesador 2</h4>
+						</div>
+						<div class="col-md-4">
+							<label>Tiempo:</label>
+							<br>
+							<label id="cronometro2" >0</label>
+						</div>
+					</div>
+
+					<div class="procesador">
+					<div class="row">
+						<div class="col-md-4">
+
+						</div>
+						<div class="col-md-2">
 							<h4>CPU</h4>
+						</div>
+						<div class="col-md-2">
 							<h4 id="rendimientoCPU2">0%</h4>
-						<div class="cpu">
-							<!-- CPU -->
-							<table class="table " id="cpu2">
-							</table>
-						</div>
 						</div>
 
-						<div class="col-xs-2">
-							<h4>Listos</h4>
-							<div class="cola2">
-								<!-- Listos -->
-								<table class="table " id="listos2">
-								</table>
-							</div>
-						</div>
-
-						<div class="col-xs-2">
-							<h4>Bloqueados</h4>
-							<div class="cola2">
-								<!-- Bloqueados -->
-								<table class="table " id="bloqueados2">
-								</table>
-							</div>
-						</div>
-
-						<div class="col-xs-2">
-							<h4>Suspendidos</h4>
-							<div class="cola2">
-								<!-- suspendidos -->
-								<table class="table " id="suspendidos2">
-								</table>
-						</div>
-						</div>
-
-						<div class="col-xs-2">
-						<h4>Terminados</h4>
-							<div class="cola2">
-								<!-- terminados -->
-								<table class="table " id="terminados2">
-								</table>
-							</div>
-						</div>
 					</div>
-				</div>
-			</div>
-
-			<h3>Procesador 3</h3>
-			 <div class ="row">
-				<div class="separador jumbotron">
-				<!-- __________________procesador 3______________________________________________-->
 					<div class="row">
-						<div class="col-xs-2">
-							<h4>Tiempo:</h4>
-							<h4 id="cronometro3">0</h4>
-						</div>
-						<div class="col-xs-2">
-							<h4>CPU</h4>
-							<h4 id="rendimientoCPU3">0%</h4>
 						<div class="cpu">
 							<!-- CPU -->
-							<table class="table " id="cpu3">
+							<table class="table table-striped" id="cpu2">
 							</table>
 						</div>
-						</div>
+					</div>
 
-						<div class="col-xs-2">
+					<div class="row">
+						<div class="col-sm-6">
 							<h4>Listos</h4>
-							<div class="cola3">
+							<div class="cola2">
 								<!-- Listos -->
-								<table class="table " id="listos3">
+								<table class="table table-striped" id="listos2">
 								</table>
 							</div>
-						</div>
 
-						<div class="col-xs-2">
+						</div>
+						<div class="col-sm-6">
 							<h4>Bloqueados</h4>
-							<div class="cola3">
+							<div class="cola2">
 								<!-- Bloqueados -->
-								<table class="table " id="bloqueados3">
-								</table>
-							</div>
-						</div>
-
-						<div class="col-xs-2">
-							<h4>Suspendidos</h4>
-							<div class="cola3">
-								<!-- suspendidos -->
-								<table class="table " id="suspendidos3">
-								</table>
-							</div>
-						</div>
-
-						<div class="col-xs-2">
-						<h4>Terminados</h4>
-							<div class="cola3">
-								<!-- terminados -->
-								<table class="table " id="terminados3">
+								<table class="table table-striped" id="bloqueados2">
 								</table>
 							</div>
 						</div>
 					</div>
+
+					<div class="row">
+						<div class="col-sm-6">
+							<h4>Suspendidos</h4>
+							<div class="cola2">
+								<!-- suspendidos -->
+								<table class="table table-striped" id="suspendidos2">
+								</table>
+							</div>
+
+						</div>
+						<div class="col-sm-6">
+							<h4>Terminados</h4>
+							<div class="cola2">
+								<!-- terminados -->
+								<table class="table table-striped" id="terminados2">
+								</table>
+
+							</div>
+						</div>
+					</div>
+					</div>
 				</div>
+<!-- __________________procesador 3______________________________________________-->
+				<div class="col-md-4 contenedor">
+
+					<div class="row">
+						<div class="col-md-4">
+							<h4>Procesador 3</h4>
+						</div>
+						<div class="col-md-4">
+							<label>Tiempo:</label>
+							<br>
+							<label id="cronometro3" >0</label>
+						</div>
+					</div>
+
+					<div class="procesador">
+					<div class="row">
+						<div class="col-md-4">
+
+						</div>
+						<div class="col-md-2">
+							<h4>CPU</h4>
+						</div>
+						<div class="col-md-2">
+							<h4 id="rendimientoCPU3">0%</h4>
+						</div>
+
+					</div>
+					<div class="row">
+						<div class="cpu">
+							<!-- CPU -->
+							<table class="table table-striped" id="cpu3">
+							</table>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-6">
+							<h4>Listos</h4>
+							<div class="cola3">
+								<!-- Listos -->
+								<table class="table table-striped" id="listos3">
+								</table>
+							</div>
+
+						</div>
+						<div class="col-sm-6">
+							<h4>Bloqueados</h4>
+							<div class="cola3">
+								<!-- Bloqueados -->
+								<table class="table table-striped" id="bloqueados3">
+								</table>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-6">
+							<h4>Suspendidos</h4>
+							<div class="cola3">
+								<!-- suspendidos -->
+								<table class="table table-striped" id="suspendidos3">
+								</table>
+							</div>
+
+						</div>
+						<div class="col-sm-6">
+							<h4>Terminados</h4>
+							<div class="cola3">
+								<!-- terminados -->
+								<table class="table table-striped" id="terminados3">
+								</table>
+
+							</div>
+						</div>
+					</div>
+					</div>
+				</div>
+
+
 			</div>
+
+		</div>
+
+		<div class="page-header"></div>
 
 		<!--
 ________espacio para estadísticas ______________________________________________________________________________
 				 -->
-	<div class="jumbotron">
+
 	<h2>Diagramas de Gantt</h2>
-	<div style="margin-left:650px;background-image:url('convenciones.png');background-size:105%;width:360px;height:120px"></div>
 		<div class="container-fluid">
 			<!-- diagramas de gant -->
 			<div class="row">
 
 				<div class="col-sm-2">
-					<br><br><br><br><br>
-					<button type="button" class="btn btn-default btn-sm" id="gantt1">Diagrama Gantt procesador 1</button>
+					<h4>Diagrama de Gantt procesador 1</h4>
+					<button type="button" class="btn btn-primary btn-sm" id="gantt1">Diagrama Gantt</button>
 					<br><br>
+					<button type="button" class="btn btn-primary btn-sm" id="rendimiento1">Rendimiento</button>
 				</div>
 				<!--diagrama gant procesador 1-->
 				<div class="col-sm-8" id="dGantt1">
@@ -272,9 +352,10 @@ ________espacio para estadísticas _____________________________________________
 			<!-- diagramas de gant -->
 			<div class="row">
 				<div class="col-sm-2">
-					<br><br><br><br><br>
-					<button type="button" class="btn btn-default btn-sm" id="gantt2">Diagrama Gantt procesador 2</button>
+					<h4>Diagrama de Gantt procesador 2</h4>
+					<button type="button" class="btn btn-warning btn-sm" id="gantt2">Diagrama Gantt</button>
 					<br><br>
+					<button type="button" class="btn btn-warning btn-sm" id="rendimiento2">Rendimiento</button>
 				</div>
 				<!--diagrama gant procesador 2-->
 				<div class="col-sm-8" id="dGantt2">
@@ -283,9 +364,10 @@ ________espacio para estadísticas _____________________________________________
 			<!-- diagramas de gant -->
 			<div class="row">
 				<div class="col-sm-2">
-					<br><br><br><br><br>
-					<button type="button" class="btn btn-default btn-sm" id="gantt3">Diagrama Gantt procesador 3</button>
+					<h4>Diagrama de Gantt procesador 3</h4>
+					<button type="button" class="btn btn-success btn-sm" id="gantt3">Diagrama Gantt</button>
 					<br><br>
+					<button type="button" class="btn btn-success btn-sm" id="rendimiento3">Rendimiento</button>
 				</div>
 				<!--diagrama gant procesador 3-->
 				<div class="col-sm-8" id="dGantt3">
@@ -293,35 +375,31 @@ ________espacio para estadísticas _____________________________________________
 			</div>
 		</div>
 		<br><br>
-	</div>
-
-	<div class="jumbotron">
 	<h2>Rendimiento</h2>
 	<div class="container-fluid">
-		<br><br>
 		<div class="row">
 			<div class="col-sm-4 tablass">
-				<button type="button" class="btn btn-default btn-sm" id="rendimiento1">Rendimiento Procesador 1</button>
-				<table class="table " id="vrendimiento1">
+				<h3>Procesador 1</h3>
+				<table class="table table-striped" id="vrendimiento1">
 
 				</table>
 
 			</div>
 			<div class="col-sm-4 tablass">
-				<button type="button" class="btn btn-default btn-sm" id="rendimiento2">Rendimiento Procesador 2</button>
-				<table class="table " id="vrendimiento2">
+				<h3>Procesador 2</h3>
+				<table class="table table-striped" id="vrendimiento2">
 
 				</table>
 			</div>
 			<div class="col-sm-4 tablass">
-				<button type="button" class="btn btn-default btn-sm" id="rendimiento3">Rendimiento Procesador 3</button>
-				<table class="table " id="vrendimiento3">
+				<h3>Procesador 3</h3>
+				<table class="table table-striped" id="vrendimiento3">
 
 				</table>
 			</div>
 		</div>
 	</div>
-	</div>
+
 	</body>
 
 </html>
