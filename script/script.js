@@ -35,6 +35,7 @@ $(document).ready(function(){
 				proceso.pos = p3;
 				procesador3.CrearProceso(proceso);
 				$("#listos3").html(dibujarCola(procesador3.listos));
+				p3++;
 				break;
 		}
 		p++;
@@ -160,6 +161,7 @@ $(document).ready(function(){
 function preestablecer(){
 	$("#nombre").val("P"+p);
 	$("#tiempo").val(5 + Math.floor(Math.random() * 20));
+	$("#sProcesador").val(Math.floor(Math.random() * 3) + 1);
 }
 
 function dibujarCola(cola){
