@@ -47,7 +47,7 @@ $(document).ready(function(){
 	$("#ejecutar").click(function(){
 		$("#ejecutar").attr("disabled",true);
 		$("#interrumpir").attr("disabled",false);
-		velEjecucion = parseFloat($("#velocidad").val()) * 1000
+		velEjecucion = 1000 / parseFloat($("#velocidad").val());
 		hilo1 = setInterval(function(){
 			procesador1.CorrerProcesador(recursos);
 			$("#listos1").html(dibujarCola(procesador1.listos));
@@ -193,7 +193,7 @@ function dibujarProceso(proceso){
 function dibujarRendiminetos(procesos){
 	var texto ="<tr><td>Nombre</td><td>Tiempo P</td><td>Tiempo Respuesta</td><td>Tiempo Espera</td><td>Penalización</td><td>Proporción Respuesta</td></tr>";
 	for(var i = 0; i < procesos.length; i++){
-		texto +="<tr>"//"<td>P"+i+"</td>";
+		texto +="<tr>";//"<td>P"+i+"</td>";
 		for(var j = 0; j < procesos[i].length; j++){
 			texto += "<td>"+procesos[i][j]+"</td>";
 		}
