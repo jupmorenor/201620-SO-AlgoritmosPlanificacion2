@@ -1,4 +1,4 @@
-/* clase Procesador */
+﻿/* clase Procesador */
 
 function Procesador(quantum){
 	this.cronometro = -1;
@@ -11,6 +11,7 @@ function Procesador(quantum){
 	this.quantum = quantum;
 	this.rendimientoProcesos = [];
 	this.rendimientoCPU = 0;
+	this.tiempoPrimero;
 
 	this.CrearProceso = crearProceso;
 	this.CorrerProcesador = correrProcesador;
@@ -27,6 +28,7 @@ function crearProceso(proceso){
 	proceso.qRestante = this.quantum;/////// recalcular quenatum ------------------------------------------------------------------
 	this.listos.Listainsertar2(proceso);
 	this.estados[proceso.pos] = [];
+	tiempoPrimero=this.listos.ListagetRaiz().proceso.tiempo;
 }
 
 /* algoritmo Round Robin */
@@ -110,9 +112,24 @@ function correrProcesador(recursos){
 			}
 			this.terminados.Listainsertar(procesoAux);
 		}
-		else{// si el proceso debe continuar en CPU
-
-			this.CPU.Listainsertar(procesoAux);
+		else{
+			/* si no le queda tiempo de quantum al proceso ( va para la cola de suspendido )*/
+			if(procesoAux.tiempo > tiempoPrimero){
+				tiempoPrimero = 1231232312312;
+				/* buscar el recurso y liberarlo */
+				for(var i in recursos){
+					if(recursos[i].nombre == procesoAux.recurso){
+						recursos[i].estado = 1;
+						break;
+					}
+				}
+				procesoAux.qRestante = 2; //   este tiempo es el que va a durar en espera en suspendido
+				this.suspendidos.Listainsertar2(procesoAux);
+			}
+			/* si el proceso debe continuar en ejecucion regresa a la cola de CPU */
+			else{
+				this.CPU.Listainsertar(procesoAux);
+			}
 		}
 	}
 
