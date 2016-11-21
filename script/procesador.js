@@ -11,7 +11,7 @@ function Procesador(quantum){
 	this.quantum = quantum;
 	this.rendimientoProcesos = [];
 	this.rendimientoCPU = 0;
-	this.tiempoPrimero;
+	this.prioridadPrimero;
 
 	this.CrearProceso = crearProceso;
 	this.CorrerProcesador = correrProcesador;
@@ -28,7 +28,7 @@ function crearProceso(proceso){
 	proceso.qRestante = this.quantum;/////// recalcular quenatum ------------------------------------------------------------------
 	this.listos.Listainsertar2(proceso);
 	this.estados[proceso.pos] = [];
-	tiempoPrimero=this.listos.ListagetRaiz().proceso.tiempo;
+	prioridadPrimero=this.listos.ListagetRaiz().proceso.prioridad;
 }
 
 /* algoritmo Round Robin */
@@ -114,8 +114,8 @@ function correrProcesador(recursos){
 		}
 		else{
 			/* si no le queda tiempo de quantum al proceso ( va para la cola de suspendido )*/
-			if(procesoAux.tiempo > tiempoPrimero){
-				tiempoPrimero = 1231232312312;
+			if(procesoAux.prioridad > prioridadPrimero){
+				//tiempoPrimero = 1231232312312;
 				/* buscar el recurso y liberarlo */
 				for(var i in recursos){
 					if(recursos[i].nombre == procesoAux.recurso){
@@ -123,7 +123,7 @@ function correrProcesador(recursos){
 						break;
 					}
 				}
-				procesoAux.qRestante = 2; //   este tiempo es el que va a durar en espera en suspendido
+				procesoAux.qRestante = 2; //  ojojojojojojojojojojo este tiempo es el que va a durar en espera en suspendido
 				this.suspendidos.Listainsertar2(procesoAux);
 			}
 			/* si el proceso debe continuar en ejecucion regresa a la cola de CPU */
@@ -292,7 +292,7 @@ function buscarEnTerminados(id){
 		procesoAux = this.terminados.Listaatender();
 		if(procesoAux.pos == id){
 			proceso = new Proceso(procesoAux.id, procesoAux.nombre, procesoAux.t, procesoAux.recurso);
-			proceso.pos = procesoAux.pos
+			proceso.pos = procesoAux.pos;
 		}
 		colaAux.Listainsertar(procesoAux);
 	}

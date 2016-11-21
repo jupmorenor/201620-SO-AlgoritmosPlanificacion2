@@ -20,13 +20,14 @@
 		<script type="text/javascript" src="gantt/miGantt.js"></script>
 		<link href="gantt/estilosGantt.css" rel="stylesheet">
 
-		<title>Algoritmo SRTF</title>
+		<title>PNAP</title>
 	</head>
 	<body>
 		<div class="jumbotron	">
-			<h1>Algoritmo SRTF</h1>
+			<h1>PNAP</h1>
 		</div>
-		<div class="container-fluid">
+
+<div class="container-fluid">
 			<h3>Agregar proceso</h3>
 			<div class ="row">
 				<form action="">
@@ -38,6 +39,7 @@
 									<th><label for="recurso" class="col-sm-2 control-label">Recurso</label></th>
 									<th><label for="tiempo" class="col-sm-2 control-label">Tiempo</label></th>
 									<th><label for="sProcesador" class="col-sm-2 control-label">Procesador</label></th>
+									<th><label for="prioridad1" class="col-sm-2 control-label">Prioridad</label></th>
 									<th></th>
 									<th><label for="velocidad" class="col-sm-2 control-label">Velocidad</label></th>
 								</tr>
@@ -61,17 +63,20 @@
 											<option value="3">Procesador 3</option>
 										</select>
 									</td>
-									<td><button type="button" class="btn btn-primary btn-sm" id="crear">Crear</button></td>
+
+									<td><input type="number" class="form-control input-sm" value="5" id="prioridad" placeholder="Prioridad de Proceso"></td>
+									<td><button type="button" class="btn btn-default btn-sm" id="crear">Crear</button></td>
 									<td><input type="number" class="form-control input-sm" id="velocidad" value="1" min="0.5" max="2" step="0.1"></td>
+
 								</tr>
 							</tbody>
 						</table>
 						<div class="row">
 							<div class="col-md-6">
-								<button type="button" class="btn btn-success btn-sm" id="ejecutar">Ejecutar</button>
+								<button type="button" class="btn btn-default btn-sm" id="ejecutar">Ejecutar</button>
 							</div>
 							<div class="col-md-6">
-								<button type="button" class="btn btn-danger btn-sm" id="interrumpir" disabled>Interrumpir</button>
+								<button type="button" class="btn btn-default btn-sm" id="interrumpir" disabled>Interrumpir</button>
 							</div>
 							<div class="col-md-6">
 
@@ -103,7 +108,6 @@
 						</div>
 
 					</div>
-
 					<div class="procesador">
 					<div class="row">
 						<div class="col-md-4">
@@ -181,7 +185,6 @@
 							<label id="cronometro2" >0</label>
 						</div>
 					</div>
-
 					<div class="procesador">
 					<div class="row">
 						<div class="col-md-4">
@@ -258,7 +261,6 @@
 							<label id="cronometro3" >0</label>
 						</div>
 					</div>
-
 					<div class="procesador">
 					<div class="row">
 						<div class="col-md-4">
@@ -341,9 +343,9 @@ ________espacio para estadísticas _____________________________________________
 
 				<div class="col-sm-2">
 					<h4>Diagrama de Gantt procesador 1</h4>
-					<button type="button" class="btn btn-primary btn-sm" id="gantt1">Diagrama Gantt</button>
+					<button type="button" class="btn btn-default btn-sm" id="gantt1">Diagrama Gantt</button>
 					<br><br>
-					<button type="button" class="btn btn-primary btn-sm" id="rendimiento1">Rendimiento</button>
+					<button type="button" class="btn btn-default btn-sm" id="rendimiento1">Rendimiento</button>
 				</div>
 				<!--diagrama gant procesador 1-->
 				<div class="col-sm-8" id="dGantt1">
@@ -353,9 +355,9 @@ ________espacio para estadísticas _____________________________________________
 			<div class="row">
 				<div class="col-sm-2">
 					<h4>Diagrama de Gantt procesador 2</h4>
-					<button type="button" class="btn btn-warning btn-sm" id="gantt2">Diagrama Gantt</button>
+					<button type="button" class="btn btn-default btn-sm" id="gantt2">Diagrama Gantt</button>
 					<br><br>
-					<button type="button" class="btn btn-warning btn-sm" id="rendimiento2">Rendimiento</button>
+					<button type="button" class="btn btn-default btn-sm" id="rendimiento2">Rendimiento</button>
 				</div>
 				<!--diagrama gant procesador 2-->
 				<div class="col-sm-8" id="dGantt2">
@@ -365,9 +367,9 @@ ________espacio para estadísticas _____________________________________________
 			<div class="row">
 				<div class="col-sm-2">
 					<h4>Diagrama de Gantt procesador 3</h4>
-					<button type="button" class="btn btn-success btn-sm" id="gantt3">Diagrama Gantt</button>
+					<button type="button" class="btn btn-default btn-sm" id="gantt3">Diagrama Gantt</button>
 					<br><br>
-					<button type="button" class="btn btn-success btn-sm" id="rendimiento3">Rendimiento</button>
+					<button type="button" class="btn btn-default btn-sm" id="rendimiento3">Rendimiento</button>
 				</div>
 				<!--diagrama gant procesador 3-->
 				<div class="col-sm-8" id="dGantt3">

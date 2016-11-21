@@ -34,7 +34,7 @@ function vacia(){
  			this.Listainsertar(proceso);
  		}
  		else{
- 			if(parseInt(proceso.tiempo) >= parseInt(this.nodoFondo.proceso.tiempo)){
+ 			if(parseInt(proceso.prioridad) >= parseInt(this.nodoFondo.proceso.prioridad)){
  				this.Listainsertar(proceso);
  			}
  			else{
@@ -42,7 +42,7 @@ function vacia(){
  				var procesoAux;
  				while(!this.Listavacia()){
  					procesoAux = this.Listaatender();
- 					if(parseInt(proceso.tiempo) < parseInt(procesoAux.tiempo)){
+ 					if(parseInt(proceso.prioridad) < parseInt(procesoAux.prioridad)){
  						colaAux.Listainsertar(proceso);
  						colaAux.Listainsertar(procesoAux);
  						break;
