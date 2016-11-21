@@ -3,8 +3,7 @@ var procesador2 = new Procesador(5);
 var procesador3 = new Procesador(5);
 var p=0; p1=0, p2=0, p3= 0; // variables para llevar la cuenta de los procesos por cada procesador
 var hilo1,hilo2,hilo3;
-var velEjecucion = 0;//parseInt($("#velocidad").val()) * 1000
-
+var velEjecucion = 0;
 
 
 /* --------------Main--------------------- */
@@ -17,7 +16,8 @@ $(document).ready(function(){
 		var nombre = $("#nombre").val();
 		var tiempo = $("#tiempo").val();
 		var recurso = $("#recurso").val();
-		var proceso = new Proceso(p, nombre, tiempo, recurso);
+		var prioridad = $("#prioridad").val();
+		var proceso = new Proceso(p,nombre, tiempo, recurso, prioridad);
 		switch (parseInt($("#sProcesador").val())) {
 			case 1:
 				proceso.pos = p1;
@@ -40,14 +40,13 @@ $(document).ready(function(){
 		}
 		p++;
 		preestablecer();
-
 	});
 
 	/* botones correr procesadores */
 	$("#ejecutar").click(function(){
 		$("#ejecutar").attr("disabled",true);
 		$("#interrumpir").attr("disabled",false);
-		velEjecucion = parseFloat($("#velocidad").val()) * 1000
+		velEjecucion = 1000 / parseFloat($("#velocidad").val());
 		hilo1 = setInterval(function(){
 			procesador1.CorrerProcesador(recursos);
 			$("#listos1").html(dibujarCola(procesador1.listos));
@@ -83,7 +82,6 @@ $(document).ready(function(){
 			procesador3.CalcularRendimiento();
 			$("#rendimientoCPU3").text(procesador3.rendimientoCPU+"%");
 		},velEjecucion);
-		console.log(velEjecucion)
 	});
 
 	/* botones interrumpir procesador */
@@ -161,6 +159,7 @@ $(document).ready(function(){
 function preestablecer(){
 	$("#nombre").val("P"+p);
 	$("#tiempo").val(5 + Math.floor(Math.random() * 20));
+	$("#prioridad").val(Math.floor(Math.random() * 3) + 1);
 	$("#sProcesador").val(Math.floor(Math.random() * 3) + 1);
 }
 
@@ -183,6 +182,7 @@ function dibujarCola(cola){
 function dibujarProceso(proceso){
 	var procesoAux ="<tr>";
 	procesoAux += "<td>"+proceso.nombre+"</td>";
+	procesoAux += "<td>"+"Pr:"+proceso.prioridad+"</td>";
 	procesoAux += "<td>"+"T:"+proceso.tiempo+"</td>";
 	procesoAux += "<td>"+proceso.recurso+"</td>";
 	procesoAux += "</tr>";
@@ -193,7 +193,7 @@ function dibujarProceso(proceso){
 function dibujarRendiminetos(procesos){
 	var texto ="<tr><td>Nombre</td><td>Tiempo P</td><td>Tiempo Respuesta</td><td>Tiempo Espera</td><td>Penalización</td><td>Proporción Respuesta</td></tr>";
 	for(var i = 0; i < procesos.length; i++){
-		texto +="<tr>"//"<td>P"+i+"</td>";
+		texto +="<tr>";//<td>P"+i+"</td>";
 		for(var j = 0; j < procesos[i].length; j++){
 			texto += "<td>"+procesos[i][j]+"</td>";
 		}

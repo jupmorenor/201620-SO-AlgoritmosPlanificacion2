@@ -275,7 +275,7 @@ function buscarEnTerminados(id){
 		procesoAux = this.terminados.Listaatender();
 		if(procesoAux.pos == id){
 			proceso = new Proceso(procesoAux.id, procesoAux.nombre, procesoAux.t, procesoAux.recurso);
-			proceso.pos = procesoAux.pos
+			proceso.pos = procesoAux.pos;
 		}
 		colaAux.Listainsertar(procesoAux);
 	}

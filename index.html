@@ -8,7 +8,7 @@
 		<script type="text/javascript" src="script/cola.js"></script>
 		<script type="text/javascript" src="script/procesador.js"></script>
 		<script type="text/javascript" src="script/recursos.js"></script>
-		<script type="text/javascript" src="script/script.js"></script>
+		<script type="text/javascript" src="script/script.js"></script>		
 		<link href="estilos/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
 		<link href="estilos/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
 		<script src="estilos/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
@@ -20,13 +20,14 @@
 		<script type="text/javascript" src="gantt/miGantt.js"></script>
 		<link href="gantt/estilosGantt.css" rel="stylesheet">
 
-		<title>Algoritmo SJF</title>
+		<title>PAP</title>
 	</head>
 	<body>
 		<div class="jumbotron	">
-			<h1>Algoritmo SJF</h1>
+			<h1>PAP</h1>	
 		</div>
-		<div class="container-fluid">
+		
+<div class="container-fluid">
 			<h3>Agregar proceso</h3>
 			<div class ="row">
 				<form action="">
@@ -38,6 +39,7 @@
 									<th><label for="recurso" class="col-sm-2 control-label">Recurso</label></th>
 									<th><label for="tiempo" class="col-sm-2 control-label">Tiempo</label></th>
 									<th><label for="sProcesador" class="col-sm-2 control-label">Procesador</label></th>
+									<th><label for="prioridad1" class="col-sm-2 control-label">Prioridad</label></th>
 									<th></th>
 									<th><label for="velocidad" class="col-sm-2 control-label">Velocidad</label></th>
 								</tr>
@@ -61,17 +63,20 @@
 											<option value="3">Procesador 3</option>
 										</select>
 									</td>
-									<td><button type="button" class="btn btn-primary btn-sm" id="crear">Crear</button></td>
+				
+									<td><input type="number" class="form-control input-sm" value="5" id="prioridad" placeholder="Prioridad de Proceso"></td>
+									<td><button type="button" class="btn btn-default btn-sm" id="crear">Crear</button></td>	
 									<td><input type="number" class="form-control input-sm" id="velocidad" value="1" min="0.5" max="2" step="0.1"></td>
+										
 								</tr>
 							</tbody>
 						</table>
 						<div class="row">
 							<div class="col-md-6">
-								<button type="button" class="btn btn-success btn-sm" id="ejecutar">Ejecutar</button>
+								<button type="button" class="btn btn-default btn-sm" id="ejecutar">Ejecutar</button>
 							</div>
 							<div class="col-md-6">
-								<button type="button" class="btn btn-danger btn-sm" id="interrumpir" disabled>Interrumpir</button>
+								<button type="button" class="btn btn-default btn-sm" id="interrumpir" disabled>Interrumpir</button>
 							</div>
 							<div class="col-md-6">
 
@@ -81,9 +86,9 @@
 				</form>
 			</div>
 		</div>
-
+			
 		<div class="page-header"></div>
-		<!--
+		<!-- 
 			fila para ubicar los procesadores
 		 -->
 		<div class="container-fluid">
@@ -103,11 +108,10 @@
 						</div>
 
 					</div>
-
 					<div class="procesador">
 					<div class="row">
 						<div class="col-md-4">
-
+							
 						</div>
 						<div class="col-md-2">
 							<h4>CPU</h4>
@@ -115,7 +119,7 @@
 						<div class="col-md-2">
 							<h4 id="rendimientoCPU1">0%</h4>
 						</div>
-
+						
 					</div>
 					<div class="row">
 						<div class="cpu">
@@ -133,7 +137,7 @@
 								<table class="table table-striped" id="listos1">
 								</table>
 							</div>
-
+							
 						</div>
 						<div class="col-sm-6">
 							<h4>Bloqueados</h4>
@@ -153,7 +157,7 @@
 								<table class="table table-striped" id="suspendidos1">
 								</table>
 							</div>
-
+							
 						</div>
 						<div class="col-sm-6">
 							<h4>Terminados</h4>
@@ -181,11 +185,10 @@
 							<label id="cronometro2" >0</label>
 						</div>
 					</div>
-
 					<div class="procesador">
 					<div class="row">
 						<div class="col-md-4">
-
+							
 						</div>
 						<div class="col-md-2">
 							<h4>CPU</h4>
@@ -193,7 +196,7 @@
 						<div class="col-md-2">
 							<h4 id="rendimientoCPU2">0%</h4>
 						</div>
-
+						
 					</div>
 					<div class="row">
 						<div class="cpu">
@@ -211,7 +214,7 @@
 								<table class="table table-striped" id="listos2">
 								</table>
 							</div>
-
+							
 						</div>
 						<div class="col-sm-6">
 							<h4>Bloqueados</h4>
@@ -231,7 +234,7 @@
 								<table class="table table-striped" id="suspendidos2">
 								</table>
 							</div>
-
+							
 						</div>
 						<div class="col-sm-6">
 							<h4>Terminados</h4>
@@ -258,11 +261,10 @@
 							<label id="cronometro3" >0</label>
 						</div>
 					</div>
-
 					<div class="procesador">
 					<div class="row">
 						<div class="col-md-4">
-
+							
 						</div>
 						<div class="col-md-2">
 							<h4>CPU</h4>
@@ -270,7 +272,7 @@
 						<div class="col-md-2">
 							<h4 id="rendimientoCPU3">0%</h4>
 						</div>
-
+						
 					</div>
 					<div class="row">
 						<div class="cpu">
@@ -288,7 +290,7 @@
 								<table class="table table-striped" id="listos3">
 								</table>
 							</div>
-
+							
 						</div>
 						<div class="col-sm-6">
 							<h4>Bloqueados</h4>
@@ -308,7 +310,7 @@
 								<table class="table table-striped" id="suspendidos3">
 								</table>
 							</div>
-
+							
 						</div>
 						<div class="col-sm-6">
 							<h4>Terminados</h4>
@@ -332,45 +334,45 @@
 
 		<!--
 ________espacio para estadísticas ______________________________________________________________________________
-				 -->
+				 -->		
 
 	<h2>Diagramas de Gantt</h2>
 		<div class="container-fluid">
 			<!-- diagramas de gant -->
 			<div class="row">
-
+				
 				<div class="col-sm-2">
 					<h4>Diagrama de Gantt procesador 1</h4>
-					<button type="button" class="btn btn-primary btn-sm" id="gantt1">Diagrama Gantt</button>
+					<button type="button" class="btn btn-default btn-sm" id="gantt1">Diagrama Gantt</button>
 					<br><br>
-					<button type="button" class="btn btn-primary btn-sm" id="rendimiento1">Rendimiento</button>
+					<button type="button" class="btn btn-default btn-sm" id="rendimiento1">Rendimiento</button>
 				</div>
 				<!--diagrama gant procesador 1-->
-				<div class="col-sm-8" id="dGantt1">
+				<div class="col-sm-8" id="dGantt1">	
 				</div>
 			</div>
 			<!-- diagramas de gant -->
 			<div class="row">
 				<div class="col-sm-2">
 					<h4>Diagrama de Gantt procesador 2</h4>
-					<button type="button" class="btn btn-warning btn-sm" id="gantt2">Diagrama Gantt</button>
+					<button type="button" class="btn btn-default btn-sm" id="gantt2">Diagrama Gantt</button>
 					<br><br>
-					<button type="button" class="btn btn-warning btn-sm" id="rendimiento2">Rendimiento</button>
+					<button type="button" class="btn btn-default btn-sm" id="rendimiento2">Rendimiento</button>
 				</div>
 				<!--diagrama gant procesador 2-->
-				<div class="col-sm-8" id="dGantt2">
+				<div class="col-sm-8" id="dGantt2">	
 				</div>
 			</div>
 			<!-- diagramas de gant -->
 			<div class="row">
 				<div class="col-sm-2">
 					<h4>Diagrama de Gantt procesador 3</h4>
-					<button type="button" class="btn btn-success btn-sm" id="gantt3">Diagrama Gantt</button>
+					<button type="button" class="btn btn-default btn-sm" id="gantt3">Diagrama Gantt</button>
 					<br><br>
-					<button type="button" class="btn btn-success btn-sm" id="rendimiento3">Rendimiento</button>
+					<button type="button" class="btn btn-default btn-sm" id="rendimiento3">Rendimiento</button>
 				</div>
 				<!--diagrama gant procesador 3-->
-				<div class="col-sm-8" id="dGantt3">
+				<div class="col-sm-8" id="dGantt3">	
 				</div>
 			</div>
 		</div>
