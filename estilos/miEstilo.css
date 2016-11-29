@@ -14,21 +14,25 @@ body{
 .cola1{
 	border: 1px solid black;
 	height: 150px;
+	background: #C1D2FC;
 	overflow: auto;
 }
 .cola2{
 	border: 1px solid black;
 	height: 150px;
+	background: #FCE6C1;
 	overflow: auto;
 }
 .cola3{
 	border: 1px solid black;
 	height: 150px;
+	background: #CEFCC1;
 	overflow: auto;
 }
 .procesador{
 	border: 1px solid black;
 	padding: 5px;
+	background: #E0E0E0;
 }
 .contenedor{
 	padding: 10px;
