@@ -1,7 +1,7 @@
  /* Clase Cola */
  function Cola() {
-	
-	/* Atributos */	
+
+	/* Atributos */
 	this.nodoRaiz = null;
 	this.nodoFondo = null;
 	this.tam = 0;
@@ -14,12 +14,12 @@
 	this.ListagetRaiz = getRaiz;
 	this.ListagetTam = getTam;
 	this.Listainsertar2 = insertar2;
-	
+
  }
- 
+
 function vacia(){
 	if(this.nodoRaiz == null){
-		
+
 		return true;
 	}
 	else{
@@ -34,7 +34,7 @@ function vacia(){
  			this.Listainsertar(proceso);
  		}
  		else{
- 			if(parseInt(proceso.prioridad) >= parseInt(this.nodoFondo.proceso.prioridad)){
+ 			if(parseInt(proceso.tiempo) >= parseInt(this.nodoFondo.proceso.tiempo)){
  				this.Listainsertar(proceso);
  			}
  			else{
@@ -42,11 +42,11 @@ function vacia(){
  				var procesoAux;
  				while(!this.Listavacia()){
  					procesoAux = this.Listaatender();
- 					if(parseInt(proceso.prioridad) < parseInt(procesoAux.prioridad)){
+ 					if(parseInt(proceso.tiempo) < parseInt(procesoAux.tiempo)){
  						colaAux.Listainsertar(proceso);
  						colaAux.Listainsertar(procesoAux);
  						break;
- 					}	
+ 					}
  					else{
  						colaAux.Listainsertar(procesoAux);
  					}
@@ -63,11 +63,11 @@ function vacia(){
  			this.tam++;
  	 	}
  }
- 
+
  //Metodo insertar
  function insertar(proceso){
 	var nuevo = new Nodo();
-	
+
 	nuevo.proceso = proceso;
 	nuevo.sig = null;
 
@@ -79,33 +79,32 @@ function vacia(){
 		this.nodoFondo.sig = nuevo;
 		this.nodoFondo = nuevo;
 	}
-	
+
 	this.tam++;
  }
- 
+
   //Método atender
  function atender(){
-	 
+
 	if (!this.Listavacia()){
-		
+
 		var aux = this.nodoRaiz;
 		if(this.nodoRaiz == this.nodoFondo){
-			
+
 			this.nodoRaiz = null;
 			this.nodoFondo = null;
-			
+
 		}
 		else{
 			this.nodoRaiz = this.nodoRaiz.sig;
 		}
 		return aux.proceso;
-	} 
+	}
 	else{
 		return 0;
 	}
-	
  }
-  
+
    //Método imprimir
  function imprimir(){
 	var aux = new Nodo();
@@ -118,15 +117,13 @@ function vacia(){
 	}
 	console.log("__________");
  }
- 
+
  function getRaiz(){
 	var aux = new Nodo();
 	aux = this.nodoRaiz;
 	return aux;
  }
- 
+
  function getTam(){
 	return this.tam;
  }
- 
- 

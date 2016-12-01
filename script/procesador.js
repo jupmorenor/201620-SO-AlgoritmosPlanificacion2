@@ -28,7 +28,7 @@ function Procesador(quantum){
 function crearProceso(proceso){
 	proceso.q = this.quantum;
 	proceso.qRestante = this.quantum;/////// recalcular quenatum ------------------------------------------------------------------
-	switch(proceso.prioridad) {
+	switch(parseInt(proceso.prioridad)) {
 		case 1:
 			this.listosRR.Listainsertar(proceso);
 			this.CalcularQuantum();
@@ -40,7 +40,7 @@ function crearProceso(proceso){
 			break;
 		case 3:
 			proceso.qRestante = "N/A"
-			this.listosSJF.Listainsertar(procesos);
+			this.listosSJF.Listainsertar(proceso);
 			break;
 	}
 	this.estados[proceso.pos] = [];
@@ -57,17 +57,18 @@ function correrProcesador(recursos){
 			procesoAux = this.suspendidos.Listaatender();
 			procesoAux.qRestante--;
 			if(procesoAux.qRestante == 0){ // si no le queda tiempo de espera en la cola de suspendidos
-				switch(procesoAux.prioridad) {
+				switch(parseInt(procesoAux.prioridad)) {
 					case 1:
 						this.listosRR.Listainsertar(procesoAux);
 						this.CalcularQuantum();
 						break;
 					case 2:
-						proceso.qRestante = "N/A"
+						procesoAux.qRestante = "N/A"
 						this.listosSRTF.Listainsertar2(procesoAux);
+						this.tiempoPrimero=this.listosSRTF.ListagetRaiz().proceso.tiempo
 						break;
 					case 3:
-						proceso.qRestante = "N/A"
+						procesoAux.qRestante = "N/A"
 						this.listosSJF.Listainsertar2(procesoAux);
 						break;
 				}
@@ -97,17 +98,18 @@ function correrProcesador(recursos){
 				if(recursos[i].nombre == procesoAux.recurso){
 					// si el recurso esta disponible
 					if(recursos[i].estado == 1){
-						switch(procesoAux.prioridad) {
+						switch(parseInt(procesoAux.prioridad)) {
 							case 1:
 								this.listosRR.Listainsertar(procesoAux);
 								this.CalcularQuantum();
 								break;
 							case 2:
-								proceso.qRestante = "N/A"
+								procesoAux.qRestante = "N/A"
 								this.listosSRTF.Listainsertar2(procesoAux);
+								this.tiempoPrimero=this.listosSRTF.ListagetRaiz().proceso.tiempo
 								break;
 							case 3:
-								proceso.qRestante = "N/A"
+								procesoAux.qRestante = "N/A"
 								this.listosSJF.Listainsertar2(procesoAux);
 								break;
 						}
@@ -155,7 +157,7 @@ function correrProcesador(recursos){
 			this.terminados.Listainsertar(procesoAux);
 		}
 		else{// si el proceso debe continuar en CPU
-			switch(procesoAux.prioridad) {
+			switch(parseInt(procesoAux.prioridad)) {
 				case 1: //se implementa RoundRobin verificando el quantum restante
 					if(procesoAux.qRestante == 0){
 						/* buscar el recurso y liberarlo */
@@ -175,7 +177,7 @@ function correrProcesador(recursos){
 				case 2://se implementa SRTF, expulsando al proceso en CPU si hay uno con menor tiempo
 					procesoAux.qRestante="NO";
 					if(!this.listosSRTF.Listavacia()){
-						if(procesoAux.tiempo > tiempoPrimero){
+						if(procesoAux.tiempo > this.tiempoPrimero){
 							/* buscar el recurso y liberarlo */
 							for(var i in recursos){
 								if(recursos[i].nombre == procesoAux.recurso){
