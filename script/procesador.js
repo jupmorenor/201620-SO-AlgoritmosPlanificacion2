@@ -15,7 +15,8 @@ function Procesador(quantum){
 	this.rendimientoCPU = 0;
 	this.tiempoPrimero;
 	this.envejecimiento = 0.5;
-
+	this.sumaTiemposProceso = 0;
+	this.sumaTiemposRespuesta = 0;
 	this.CrearProceso = crearProceso;
 	this.CorrerProcesador = correrProcesador;
 	this.DetenerProcesador = detenerProcesador;
@@ -23,6 +24,11 @@ function Procesador(quantum){
 	this.CalcularRendimiento = calcularrendimiento;
 	this.BuscarEnTerminados = buscarEnTerminados;
 	this.CalcularQuantum = calcularQuantum;
+	this.valorRendimientoCPU = 0;
+	this.CalcularSumaTProceso = calcularSumaTProceso;
+	this.CalcularSumaTRespuesta = calcularSumaTRespuesta;
+	this.CalcularRendimientoCPU= calcularRendimientoCPU;
+	this.verificar=0;
 
 }
 
@@ -31,17 +37,18 @@ function crearProceso(proceso){
 	proceso.qRestante = this.quantum;/////// recalcular quenatum ------------------------------------------------------------------
 	switch(parseInt(proceso.prioridad)) {
 		case 1:
+			proceso.enve = 0;
 			this.listosRR.Listainsertar(proceso);
 			this.CalcularQuantum();
 			break;
 		case 2:
-			proceso.qRestante = "N/A"
+			proceso.qRestante = "N/A";
 			proceso.enve = parseInt(parseInt(proceso.t)*this.envejecimiento);
 			this.listosSRTF.Listainsertar(proceso);
 			this.tiempoPrimero=this.listosSRTF.ListagetRaiz().proceso.tiempo;
 			break;
 		case 3:
-			proceso.qRestante = "N/A"
+			proceso.qRestante = "N/A";
 			proceso.enve = parseInt(parseInt(proceso.t)*this.envejecimiento);
 			this.listosSJF.Listainsertar(proceso);
 			break;
@@ -592,5 +599,23 @@ function calcularQuantum(){
 			this.listosRR.Listainsertar(procesoAux);
 		}
 
+	}
+}
+function calcularSumaTProceso(){
+	for(var i = 0; i < this.estados.length; i++){
+		this.sumaTiemposProceso = this.sumaTiemposProceso + parseInt(this.rendimientoProcesos[i][1]);
+	}
+}
+function calcularSumaTRespuesta(){
+for(var i = 0; i < this.estados.length; i++){
+		this.sumaTiemposRespuesta = this.sumaTiemposRespuesta + parseInt(this.rendimientoProcesos[i][2]);
+	}
+}
+function calcularRendimientoCPU(){
+	if (parseInt(this.sumaTiemposRespuesta)!=0){
+		this.valorRendimientoCPU = parseInt(this.sumaTiemposProceso)/parseInt(this.sumaTiemposRespuesta);
+	}
+	else{
+		this.valorRendimientoCPU = 0;
 	}
 }

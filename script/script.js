@@ -208,18 +208,180 @@ $(document).ready(function(){
 
 	});
 
+	$("#rendimientoTotal").click(function(){
+		var llamada = [];
+		//calcular sumar
+		procesador1.CalcularSumaTProceso();
+		procesador1.CalcularSumaTRespuesta();
+		procesador1.CalcularRendimientoCPU();
+
+		procesador2.CalcularSumaTProceso();
+		procesador2.CalcularSumaTRespuesta();
+		procesador2.CalcularRendimientoCPU();
+
+		procesador3.CalcularSumaTProceso();
+		procesador3.CalcularSumaTRespuesta();
+		procesador3.CalcularRendimientoCPU();
+		//var sumaTiemposR = procesador1.sumaTiemposRespuesta+procesador2.sumaTiemposRespuesta+procesador3.sumaTiemposRespuesta;
+		//var promedioTiempoR=formato_numero(sumaTiemposR/3);
+		llamada [0]= ["Procesador 1",formato_numero(procesador1.valorRendimientoCPU*100)+" %",procesador1.sumaTiemposRespuesta];
+		llamada [1]= ["Procesador 2",formato_numero(procesador2.valorRendimientoCPU*100)+" %",procesador2.sumaTiemposRespuesta];
+		llamada [2]= ["Procesador 3",formato_numero(procesador3.valorRendimientoCPU*100)+" %",procesador3.sumaTiemposRespuesta];
+		llamada [3]= ["Total Procesadores",
+										promedio(procesador1.valorRendimientoCPU,
+														procesador2.valorRendimientoCPU,
+														procesador3.valorRendimientoCPU),
+										promedioT(procesador1.sumaTiemposRespuesta,
+														procesador2.sumaTiemposRespuesta,
+														procesador3.sumaTiemposRespuesta)];
+
+		$("#rendimientot1").html(dibujarRendiminetosTotal(llamada));
+		$("#dibujoecuacion2").html(dibujarimagen2());
+		$("#dibujoecuacion1").html(dibujarimagen1());
+		$("#dibujoecuacion").html(dibujarimagen());
+		$("#resultado").html("<h2>"+resultado()+"</h2>");
+	});
+
 });
 
 /*-----------------------------------------*/
 
 /* funciones de apoyo */
-
+function promedio(promedio1,promedio2,promedio3){
+	var sumaProcesos= promedio1+promedio2+promedio3;
+	if(promedio1!=0){
+		if(promedio2!=0){
+			if(promedio3!=0){
+				var promedioProcesos=formato_numero((sumaProcesos/3)*100);
+				var muestra = promedioProcesos+" %";
+				return muestra;
+			}
+			else{
+				var promedioProcesos=formato_numero((sumaProcesos/2)*100);
+				var muestra = promedioProcesos+" %";
+				return muestra;
+			}
+		}else{
+			if(promedio3!=0){
+				var promedioProcesos=formato_numero((sumaProcesos/2)*100);
+				var muestra = promedioProcesos+" %";
+				return muestra;
+			}
+			else{
+				var promedioProcesos=formato_numero((sumaProcesos)*100);;
+				var muestra = promedioProcesos+" %";
+				return muestra;
+			}
+		}
+	}else{
+		if(promedio2!=0){
+			if(promedio3!=0){
+				var promedioProcesos=formato_numero((sumaProcesos/2)*100);
+				var muestra = promedioProcesos+" %";
+				return muestra;
+			}
+			else{
+				var promedioProcesos=formato_numero((sumaProcesos)*100);
+				var muestra = promedioProcesos+" %";
+				return muestra;
+			}
+		}
+		else{
+			if(promedio3!=0){
+				var promedioProcesos=formato_numero((sumaProcesos)*100);
+				var muestra = promedioProcesos+" %";
+				return muestra;
+			}
+			else{
+				var promedioProcesos=0;
+				var muestra = promedioProcesos+" %";
+				return muestra;
+			}
+		}
+	}
+};
+function promedioT(promedio1,promedio2,promedio3){
+	var sumaProcesos= promedio1+promedio2+promedio3;
+	if(promedio1!=0){
+		if(promedio2!=0){
+			if(promedio3!=0){
+				var promedioProcesos=formato_numero((sumaProcesos/3));
+				var muestra = promedioProcesos;
+				return muestra;
+			}
+			else{
+				var promedioProcesos=formato_numero((sumaProcesos/2));
+				var muestra = promedioProcesos;
+				return muestra;
+			}
+		}else{
+			if(promedio3!=0){
+				var promedioProcesos=formato_numero((sumaProcesos/2));
+				var muestra = promedioProcesos;
+				return muestra;
+			}
+			else{
+				var promedioProcesos=formato_numero((sumaProcesos));
+				var muestra = promedioProcesos;
+				return muestra;
+			}
+		}
+	}else{
+		if(promedio2!=0){
+			if(promedio3!=0){
+				var promedioProcesos=formato_numero((sumaProcesos/2));
+				var muestra = promedioProcesos;
+				return muestra;
+			}
+			else{
+				var promedioProcesos=formato_numero((sumaProcesos));
+				var muestra = promedioProcesos;
+				return muestra;
+			}
+		}
+		else{
+			if(promedio3!=0){
+				var promedioProcesos=formato_numero((sumaProcesos));
+				var muestra = promedioProcesos;
+				return muestra;
+			}
+			else{
+				var promedioProcesos=0;
+				var muestra = promedioProcesos;
+				return muestra;
+			}
+		}
+	}
+};
+function formato_numero(numero){ // v2007-08-06
+    decimales = 2;
+    separador_decimal = ",";
+    separador_miles = ".";
+    numero=parseFloat(numero);
+    if(isNaN(numero)){
+        return "";
+    }
+    if(decimales!==undefined){
+        // Redondeamos
+        numero=numero.toFixed(decimales);
+    }
+    // Convertimos el punto en separador_decimal
+    numero=numero.toString().replace(".", separador_decimal!==undefined ? separador_decimal : ",");
+    if(separador_miles){
+        // Añadimos los separadores de miles
+        var miles=new RegExp("(-?[0-9]+)([0-9]{3})");
+        while(miles.test(numero)) {
+            numero=numero.replace(miles, "$1" + separador_miles + "$2");
+        }
+    }
+return numero;
+};
 /* funcion para dar valores por defecto a los campos de los formularios */
 function preestablecer(){
 	$("#nombre").val("P"+p);
 	$("#tiempo").val(5 + Math.floor(Math.random() * 20));
 	$("#prioridad").val(Math.floor(Math.random() * 3) + 1);
-	$("#sProcesador").val(Math.floor(Math.random() * 3) + 1);
+	$("#sProcesador").val(1);
 }
 
 function dibujarCola(cola){
@@ -259,10 +421,11 @@ function dibujarProceso(proceso){
 	procesoAux += "<td>"+proceso.nombre+"</td>";
 	procesoAux += "<td>"+"Pr:"+proceso.prioridad+"</td>";
 	procesoAux += "<td>"+"T:"+proceso.tiempo+"</td>";
-	procesoAux += "<td>"+proceso.recurso+"</td>";
-	procesoAux += "<td>"+proceso.enve+"</td>";
+	procesoAux += "<td>"+"R:"+proceso.recurso+"</td>";
 	if (proceso.prioridad == 1) {
 		procesoAux += "<td>"+"Q:"+proceso.qRestante+"</td>";
+	} else {
+		procesoAux += "<td>"+"Env:"+proceso.enve+"</td>";
 	}
 	procesoAux += "</tr>";
 	return procesoAux;
@@ -273,8 +436,11 @@ function dibujarRendiminetos(procesos){
 	var texto ="<tr><td>Nombre</td><td>Tiempo P</td><td>Tiempo Respuesta</td><td>Tiempo Espera</td><td>Penalización</td><td>Proporción Respuesta</td></tr>";
 	for(var i = 0; i < procesos.length; i++){
 		texto +="<tr>";//<td>P"+i+"</td>";
-		for(var j = 0; j < procesos[i].length; j++){
+		for(var j = 0; j < procesos[i].length-2; j++){
 			texto += "<td>"+procesos[i][j]+"</td>";
+		}
+		for(var k = procesos[i].length-2; k < procesos[i].length; k++){
+			texto += "<td>"+formato_numero(procesos[i][k])+"</td>";
 		}
 		texto +="</tr>";
 	}
@@ -285,4 +451,40 @@ function prepararRecursos() {
 	for (i=0; i<recursos.length; i++) {
 		$("#recurso").append('<option value="' + recursos[i].nombre + '">' + recursos[i].nombre + '</option>')
 	}
+}
+function dibujarRendiminetosTotal(sumaTiempos){
+	var texto ="<tr><td>Nombre</td><td>Rendimiento</td><td>Tiempo Respuestas</td></tr>";
+	for(var i = 0; i < sumaTiempos.length; i++){
+		for(var j = 0; j < 3; j++){
+			texto += "<td>"+sumaTiempos[i][j]+"</td>";
+		}
+		texto +="</tr>";
+	}
+	return texto;
+}
+
+function dibujarimagen(){
+	var img = "<img src='img/ecuacion.png' width='500' height='100'>";
+	return img;
+}
+function dibujarimagen1(){
+	var img = "<img src='img/ecuacion1.png'>";
+	return img;
+}
+function dibujarimagen2(){
+	var img = "<img src='img/ecuacion2.png'>";
+	return img;
+}
+function resultado(){
+	var z=promedio(procesador1.valorRendimientoCPU,procesador2.valorRendimientoCPU,procesador3.valorRendimientoCPU);
+	console.log(z);
+	var ren;
+	alert("El rendimiento total del algoritmo es del "+z);
+	if(parseInt(z)<=40){
+		ren ="El rendimiento es ineficiente ya que es inferior a 40%";
+	}
+	else{
+		ren="El algoritmo es eficiente ya que es mayor a 40%";
+	}
+	return ren;
 }

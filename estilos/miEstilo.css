@@ -1,13 +1,13 @@
 body{
 	text-align: center;
-	margin: 0 0px;		
+	margin: 0 0px;
 }
 .container-fluid{
 	margin: 0px 40px;
 }
 .cpu{
 	border: 1px solid black;
-	width: 190px;
+	width: 250px;
 	height: 35px;
 	margin: 0 auto;
 }

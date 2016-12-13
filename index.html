@@ -20,11 +20,11 @@
 		<script type="text/javascript" src="gantt/miGantt.js"></script>
 		<link href="gantt/estilosGantt.css" rel="stylesheet">
 
-		<title>Colas multiples</title>
+		<title>Colas multiples retroalimentadas</title>
 	</head>
 	<body>
 		<div class="jumbotron	">
-			<h1>Colas multiples</h1>
+			<h1>Colas multiples retroalimentadas</h1>
 		</div>
 		<div class="container-fluid">
 			<h3>Agregar proceso</h3>
@@ -388,7 +388,7 @@ ________espacio para estadísticas _____________________________________________
 	<h2>Diagramas de Gantt</h2>
 		<div class="container-fluid">
 			<!-- diagramas de gant -->
-			<img src="convenciones.png"></img>
+			<img src="img/convenciones.png"></img>
 			<div class="row">
 
 				<div class="col-sm-2">
@@ -430,6 +430,10 @@ ________espacio para estadísticas _____________________________________________
 	<h2>Rendimiento</h2>
 	<div class="container-fluid">
 		<div class="row">
+			<div class="col-sm-6" id="dibujoecuacion2"></div>
+			<div class="col-sm-6" id="dibujoecuacion1"></div>
+		</div>
+		<div class="row">
 			<div class="col-sm-4 tablass">
 				<h3>Procesador 1</h3>
 				<table class="table table-striped" id="vrendimiento1">
@@ -450,6 +454,23 @@ ________espacio para estadísticas _____________________________________________
 				</table>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-sm-4 tablass">
+			</div>
+			<div class="col-sm-4 tablass">
+				<h1>Metrica</h1>
+				<button type="button" class="btn btn-success btn-sm" id="rendimientoTotal">Metrica Proporcion Respuesta</button>
+				<br><br>
+				<table class="table table-striped" id="rendimientot1">
+				</table>
+			</div>
+
+		</div>
+		<div class="row">
+			<div id="dibujoecuacion"></div>
+			<div id="resultado"></div>
+		</div>
+
 	</div>
 
 	</body>
