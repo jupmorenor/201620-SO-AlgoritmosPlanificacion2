@@ -10,6 +10,7 @@ var velEjecucion = 0;
 $(document).ready(function(){
 
 	preestablecer();
+	prepararRecursos();
 
 	/* Botones para crear procesos */
 	$("#crear").click(function(){
@@ -23,7 +24,7 @@ $(document).ready(function(){
 				proceso.pos = p1;
 				procesador1.CrearProceso(proceso);
 				$("#listosRR1").html(dibujarCola(procesador1.listosRR));
-				$("#listosSRTF1").html(dibujarCola(procesador1.listosSRTF));
+				$("#listosSRTF1").html(dibujarColaOrdenada(procesador1.listosSRTF));
 				$("#listosSJF1").html(dibujarCola(procesador1.listosSJF));
 				p1++;
 				break;
@@ -31,7 +32,7 @@ $(document).ready(function(){
 				proceso.pos = p2;
 				procesador2.CrearProceso(proceso);
 				$("#listosRR2").html(dibujarCola(procesador2.listosRR));
-				$("#listosSRTF2").html(dibujarCola(procesador2.listosSRTF));
+				$("#listosSRTF2").html(dibujarColaOrdenada(procesador2.listosSRTF));
 				$("#listosSJF2").html(dibujarCola(procesador2.listosSJF));
 				p2++;
 				break;
@@ -39,7 +40,7 @@ $(document).ready(function(){
 				proceso.pos = p3;
 				procesador3.CrearProceso(proceso);
 				$("#listosRR3").html(dibujarCola(procesador3.listosRR));
-				$("#listosSRTF3").html(dibujarCola(procesador3.listosSRTF));
+				$("#listosSRTF3").html(dibujarColaOrdenada(procesador3.listosSRTF));
 				$("#listosSJF3").html(dibujarCola(procesador3.listosSJF));
 				p3++;
 				break;
@@ -71,7 +72,7 @@ $(document).ready(function(){
 		hilo1 = setInterval(function(){
 			procesador1.CorrerProcesador(recursos);
 			$("#listosRR1").html(dibujarCola(procesador1.listosRR));
-			$("#listosSRTF1").html(dibujarCola(procesador1.listosSRTF));
+			$("#listosSRTF1").html(dibujarColaOrdenada(procesador1.listosSRTF));
 			$("#listosSJF1").html(dibujarCola(procesador1.listosSJF));
 			$("#suspendidos1").html(dibujarCola(procesador1.suspendidos));
 			$("#bloqueados1").html(dibujarCola(procesador1.bloqueados));
@@ -89,7 +90,7 @@ $(document).ready(function(){
 		hilo2 = setInterval(function(){
 			procesador2.CorrerProcesador(recursos);
 			$("#listosRR2").html(dibujarCola(procesador2.listosRR));
-			$("#listosSRTF2").html(dibujarCola(procesador2.listosSRTF));
+			$("#listosSRTF2").html(dibujarColaOrdenada(procesador2.listosSRTF));
 			$("#listosSJF2").html(dibujarCola(procesador2.listosSJF));
 			$("#suspendidos2").html(dibujarCola(procesador2.suspendidos));
 			$("#bloqueados2").html(dibujarCola(procesador2.bloqueados));
@@ -107,7 +108,7 @@ $(document).ready(function(){
 		hilo3 = setInterval(function(){
 			procesador3.CorrerProcesador(recursos);
 			$("#listosRR3").html(dibujarCola(procesador3.listosRR));
-			$("#listosSRTF3").html(dibujarCola(procesador3.listosSRTF));
+			$("#listosSRTF3").html(dibujarColaOrdenada(procesador3.listosSRTF));
 			$("#listosSJF3").html(dibujarCola(procesador3.listosSJF));
 			$("#suspendidos3").html(dibujarCola(procesador3.suspendidos));
 			$("#bloqueados3").html(dibujarCola(procesador3.bloqueados));
@@ -131,7 +132,7 @@ $(document).ready(function(){
 		procesador1.DetenerProcesador(recursos);
 		clearInterval(hilo1);
 		$("#listosRR1").html(dibujarCola(procesador1.listosRR));
-		$("#listosSRTF1").html(dibujarCola(procesador1.listosSRTF));
+		$("#listosSRTF1").html(dibujarColaOrdenada(procesador1.listosSRTF));
 		$("#listosSJF1").html(dibujarCola(procesador1.listosSJF));
 		$("#suspendidos1").html(dibujarCola(procesador1.suspendidos));
 		$("#bloqueados1").html(dibujarCola(procesador1.bloqueados));
@@ -145,7 +146,7 @@ $(document).ready(function(){
 		procesador2.DetenerProcesador(recursos);
 		clearInterval(hilo2);
 		$("#listosRR2").html(dibujarCola(procesador2.listosRR));
-		$("#listosSRTF2").html(dibujarCola(procesador2.listosSRTF));
+		$("#listosSRTF2").html(dibujarColaOrdenada(procesador2.listosSRTF));
 		$("#listosSJF2").html(dibujarCola(procesador2.listosSJF));
 		$("#suspendidos2").html(dibujarCola(procesador2.suspendidos));
 		$("#bloqueados2").html(dibujarCola(procesador2.bloqueados));
@@ -159,15 +160,14 @@ $(document).ready(function(){
 		procesador3.DetenerProcesador(recursos);
 		clearInterval(hilo3);
 		$("#listosRR3").html(dibujarCola(procesador3.listosRR));
-		$("#listosSRTF3").html(dibujarCola(procesador3.listosSRTF));
+		$("#listosSRTF3").html(dibujarColaOrdenada(procesador3.listosSRTF));
 		$("#listosSJF3").html(dibujarCola(procesador3.listosSJF));
 		$("#suspendidos3").html(dibujarCola(procesador3.suspendidos));
 		$("#bloqueados3").html(dibujarCola(procesador3.bloqueados));
 		$("#terminados3").html(dibujarCola(procesador3.terminados));
 		$("#cpu3").html(dibujarCola(procesador3.CPU));
-		$("#dGantt3").html("");
 		if (procesador3.estados.length > 0) {
-			$("#dGantt2").html("");
+			$("#dGantt3").html("");
 			pintarGantt(procesador3.estados,"#dGantt3");
 		}
 	});
@@ -238,15 +238,32 @@ function dibujarCola(cola){
 	return textoCola;
 }
 
+function dibujarColaOrdenada(cola){
+	var colaAux = new Cola();
+	var textoCola = "";
+	var procesoAux;
+	while(!cola.Listavacia()){
+		procesoAux = cola.Listaatender();
+		textoCola += dibujarProceso(procesoAux);
+		colaAux.Listainsertar2(procesoAux);
+	}
+	while(!colaAux.Listavacia()){
+		procesoAux = colaAux.Listaatender();
+		cola.Listainsertar2(procesoAux);
+	}
+	return textoCola;
+}
+
 function dibujarProceso(proceso){
 	var procesoAux ="<tr>";
 	procesoAux += "<td>"+proceso.nombre+"</td>";
 	procesoAux += "<td>"+"Pr:"+proceso.prioridad+"</td>";
 	procesoAux += "<td>"+"T:"+proceso.tiempo+"</td>";
+	procesoAux += "<td>"+proceso.recurso+"</td>";
+	procesoAux += "<td>"+proceso.enve+"</td>";
 	if (proceso.prioridad == 1) {
 		procesoAux += "<td>"+"Q:"+proceso.qRestante+"</td>";
 	}
-	procesoAux += "<td>"+proceso.recurso+"</td>";
 	procesoAux += "</tr>";
 	return procesoAux;
 }
@@ -262,4 +279,10 @@ function dibujarRendiminetos(procesos){
 		texto +="</tr>";
 	}
 	return texto;
+}
+
+function prepararRecursos() {
+	for (i=0; i<recursos.length; i++) {
+		$("#recurso").append('<option value="' + recursos[i].nombre + '">' + recursos[i].nombre + '</option>')
+	}
 }

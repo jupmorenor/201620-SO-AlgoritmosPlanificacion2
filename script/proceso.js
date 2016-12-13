@@ -8,4 +8,5 @@ function Proceso(id, nombre, tiempo, recurso, prioridad){
 	this.recurso = recurso;
 	this.t = tiempo;
 	this.prioridad = prioridad;
+	this.enve;
 }

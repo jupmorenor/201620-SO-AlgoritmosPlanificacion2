@@ -14,6 +14,7 @@ function Procesador(quantum){
 	this.rendimientoProcesos = [];
 	this.rendimientoCPU = 0;
 	this.tiempoPrimero;
+	this.envejecimiento = 0.5;
 
 	this.CrearProceso = crearProceso;
 	this.CorrerProcesador = correrProcesador;
@@ -35,11 +36,13 @@ function crearProceso(proceso){
 			break;
 		case 2:
 			proceso.qRestante = "N/A"
+			proceso.enve = parseInt(parseInt(proceso.t)*this.envejecimiento);
 			this.listosSRTF.Listainsertar(proceso);
 			this.tiempoPrimero=this.listosSRTF.ListagetRaiz().proceso.tiempo;
 			break;
 		case 3:
 			proceso.qRestante = "N/A"
+			proceso.enve = parseInt(parseInt(proceso.t)*this.envejecimiento);
 			this.listosSJF.Listainsertar(proceso);
 			break;
 	}
@@ -64,11 +67,13 @@ function correrProcesador(recursos){
 						break;
 					case 2:
 						procesoAux.qRestante = "N/A"
+						procesoAux.enve = parseInt(parseInt(procesoAux.t)*this.envejecimiento);
 						this.listosSRTF.Listainsertar2(procesoAux);
 						this.tiempoPrimero=this.listosSRTF.ListagetRaiz().proceso.tiempo
 						break;
 					case 3:
 						procesoAux.qRestante = "N/A"
+						procesoAux.enve = parseInt(parseInt(procesoAux.t)*this.envejecimiento);
 						this.listosSJF.Listainsertar2(procesoAux);
 						break;
 				}
@@ -105,11 +110,13 @@ function correrProcesador(recursos){
 								break;
 							case 2:
 								procesoAux.qRestante = "N/A"
+								procesoAux.enve = parseInt(parseInt(procesoAux.t)*this.envejecimiento);
 								this.listosSRTF.Listainsertar2(procesoAux);
 								this.tiempoPrimero=this.listosSRTF.ListagetRaiz().proceso.tiempo
 								break;
 							case 3:
 								procesoAux.qRestante = "N/A"
+								procesoAux.enve = parseInt(parseInt(procesoAux.t)*this.envejecimiento);
 								this.listosSJF.Listainsertar2(procesoAux);
 								break;
 						}
@@ -225,7 +232,15 @@ function correrProcesador(recursos){
 				}
 			}
 		}
-	} else if(!this.listosSRTF.Listavacia()){
+	if(!this.CPU.Listavacia() && this.CPU.ListagetRaiz().prioridad > 1){
+		var procesoAux = this.CPU.Listaatender();
+		/* buscar el recurso y liberarlo */
+		for(var i in recursos){
+			if(recursos[i].nombre == procesoAux.recurso){
+				recursos[i].estado = 1;
+				break;
+			}
+		}
 		/* mientras la CPU esta disponible y haya algo por antender en listos */
 		while(this.CPU.Listavacia() && !this.listosSRTF.Listavacia()){
 			var procesoAux = this.listosSRTF.Listaatender();
@@ -244,7 +259,98 @@ function correrProcesador(recursos){
 				}
 			}
 		}
-	} else if(!this.listosSJF.Listavacia()){
+		if(this.CPU.Listavacia()){
+			this.CPU.Listainsertar(procesoAux);
+			/* buscar el recurso y ocuparlo */
+			for(var i in recursos){
+				if(recursos[i].nombre == procesoAux.recurso){
+					recursos[i].estado = 0;
+					break;
+				}
+			}
+		} else {
+			procesoAux.qRestante = 2; //  ojojojojojojojojojojo este tiempo es el que va a durar en espera en suspendido
+			this.suspendidos.Listainsertar(procesoAux);
+		}
+	}
+} else if (!this.listosSRTF.Listavacia()) {
+	while(this.CPU.Listavacia() && !this.listosSRTF.Listavacia()){
+		var procesoAux = this.listosSRTF.Listaatender();
+		/* revisar recursos */
+		for(var i in recursos){
+			if(recursos[i].nombre == procesoAux.recurso){
+				/* si el recurso esta disponible */
+				if(recursos[i].estado == 1){
+					this.CPU.Listainsertar(procesoAux);
+					recursos[i].estado = 0;
+				}/* si el recurso no esta disponible*/
+				else{
+					this.bloqueados.Listainsertar(procesoAux);
+				}
+				break;
+			}
+		}
+	}
+	if(!this.CPU.Listavacia() && this.CPU.ListagetRaiz().prioridad > 2){
+		var procesoAux = this.CPU.Listaatender();
+		/* buscar el recurso y liberarlo */
+		for(var i in recursos){
+			if(recursos[i].nombre == procesoAux.recurso){
+				recursos[i].estado = 1;
+				break;
+			}
+		}
+		while(this.CPU.Listavacia() && !this.listosSRTF.Listavacia()){
+			var procesoAux2 = this.listosSRTF.Listaatender();
+			/* revisar recursos */
+			for(var i in recursos){
+				if(recursos[i].nombre == procesoAux2.recurso){
+					/* si el recurso esta disponible */
+					if(recursos[i].estado == 1){
+						this.CPU.Listainsertar(procesoAux2);
+						recursos[i].estado = 0;
+					}/* si el recurso no esta disponible*/
+					else{
+						this.bloqueados.Listainsertar(procesoAux2);
+					}
+					break;
+				}
+			}
+		}
+		if(this.CPU.Listavacia()){
+			this.CPU.Listainsertar(procesoAux);
+			/* buscar el recurso y ocuparlo */
+			for(var i in recursos){
+				if(recursos[i].nombre == procesoAux.recurso){
+					recursos[i].estado = 0;
+					break;
+				}
+			}
+		}
+		else{
+			procesoAux.qRestante = 2; //  ojojojojojojojojojojo este tiempo es el que va a durar en espera en suspendido
+			this.suspendidos.Listainsertar(procesoAux);
+		}
+	}
+	/* envejecer */
+	var colaAux = new Cola();
+	while(!this.listosSRTF.Listavacia()){
+		var process = this.listosSRTF.Listaatender();
+		process.enve --;
+		if(process.enve == 0){
+			process.prioridad = 1;
+			this.listosRR.Listainsertar(process);
+			this.CalcularQuantum();
+		}
+		else{
+			colaAux.Listainsertar(process);
+		}
+	}
+	while(!colaAux.Listavacia()){
+		var process = colaAux.Listaatender();
+		this.listosSRTF.Listainsertar(process);
+	}
+} else if(!this.listosSJF.Listavacia()){
 		/* mientras la CPU esta disponible y haya algo por antender en listos */
 		while(this.CPU.Listavacia() && !this.listosSJF.Listavacia()){
 			var procesoAux = this.listosSJF.Listaatender();
@@ -262,6 +368,24 @@ function correrProcesador(recursos){
 					break;
 				}
 			}
+		}
+		/* envejecer */
+		var colaAux = new Cola();
+		while(!this.listosSJF.Listavacia()){
+			var process = this.listosSJF.Listaatender();
+			process.enve --;
+			if(process.enve == 0){
+				process.prioridad = 2;
+				process.enve = parseInt(parseInt(process.t)*this.envejecimiento);
+				this.listosSRTF.Listainsertar2(process);
+			}
+			else{
+				colaAux.Listainsertar(process);
+			}
+		}
+		while(!colaAux.Listavacia()){
+			var process = colaAux.Listaatender();
+			this.listosSJF.Listainsertar(process);
 		}
 	}
 	this.GuardarEstadosProcesos();

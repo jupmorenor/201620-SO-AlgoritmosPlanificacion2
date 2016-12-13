@@ -10,7 +10,7 @@ function pintarGantt(procesos, lugar){
 		procesoAux = procesos[i];
 		tasks = tasks.concat(dividirProceso(procesoAux, i));
 	}
-	console.log(tasks);
+	//console.log(tasks);
 
 	/*var tasks = [
 {"startDate":new Date("Sun Dec 09 01:36:45 EST 2012"),"endDate":new Date("Sun Dec 09 02:36:45 EST 2012"),"taskName":"E Job","status":"RUNNING"},
@@ -39,7 +39,7 @@ var minDate = tasks[0].startDate;
 var format = "%M:%S";
 
 var gantt = d3.gantt().taskTypes(taskNames).taskStatus(taskStatus).tickFormat(format);
-console.log(lugar);
+//console.log(lugar);
 gantt(tasks, lugar);
 
 }
