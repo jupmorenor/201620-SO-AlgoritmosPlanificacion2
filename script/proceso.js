@@ -6,6 +6,7 @@ function Proceso(id, nombre, tiempo, recurso, prioridad){
 	this.q;
 	this.qRestante;
 	this.recurso = recurso;
+	this.turno;
 	this.t = tiempo;
 	this.prioridad = prioridad;
 	this.enve;

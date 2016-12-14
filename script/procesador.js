@@ -14,7 +14,7 @@ function Procesador(quantum){
 	this.rendimientoProcesos = [];
 	this.rendimientoCPU = 0;
 	this.tiempoPrimero;
-	this.envejecimiento = 0.5;
+	this.envejecimiento = 0.75;
 	this.sumaTiemposProceso = 0;
 	this.sumaTiemposRespuesta = 0;
 	this.CrearProceso = crearProceso;
@@ -34,7 +34,14 @@ function Procesador(quantum){
 
 function crearProceso(proceso){
 	proceso.q = this.quantum;
-	proceso.qRestante = this.quantum;/////// recalcular quenatum ------------------------------------------------------------------
+	proceso.qRestante = this.quantum;
+	for (var i in recursos) {
+		if(recursos[i].nombre == proceso.recurso){
+			proceso.turno = recursos[i].turno;
+			recursos[i].turno++;
+			break;
+		}
+	}
 	switch(parseInt(proceso.prioridad)) {
 		case 1:
 			proceso.enve = 0;
@@ -56,7 +63,7 @@ function crearProceso(proceso){
 	this.estados[proceso.pos] = [];
 }
 
-/* algoritmo colas multiples */
+/* algoritmo colas multiples retroalimentadas */
 function correrProcesador(recursos){
 	this.cronometro++;
 	/* si hay algo en la cola de suspendidos (revisa todos los procesos, y decide si enviarlos a listos o si continuan en suspendidos) */
@@ -102,16 +109,13 @@ function correrProcesador(recursos){
 		while(!this.bloqueados.Listavacia()){
 			procesoAux = this.bloqueados.Listaatender();
 
-
-			/*------------------------------------------------------------------------
-*/
-			// revisar recursos
 			for(var i in recursos){
 				if(recursos[i].nombre == procesoAux.recurso){
 					// si el recurso esta disponible
 					if(recursos[i].estado == 1){
 						switch(parseInt(procesoAux.prioridad)) {
 							case 1:
+								this.verificar=0;
 								this.listosRR.Listainsertar(procesoAux);
 								this.CalcularQuantum();
 								break;
@@ -129,24 +133,14 @@ function correrProcesador(recursos){
 						}
 					}// si el recurso no esta disponible
 					else{
+						if(procesoAux.prioridad == 1) {
+							this.verificar=1;
+						}
 						colaAux.Listainsertar(procesoAux);
 					}
 					break;
 				}
 			}
-
-
-
-			/*
-			procesoAux.qRestante--;
-			if(procesoAux.qRestante == 0){ // si no le queda tiempo de espera en la cola de bloqueados
-				procesoAux.qRestante = this.quantum;  /////// recalcular quenatum ------------------------------------------------------------------
-				this.listos.Listainsertar(procesoAux);
-			}
-			else{ // si tiene que esperar aún en la cola de bloqueados
-				colaAux.Listainsertar(procesoAux);
-			}
-			*/
 		}
 		while(!colaAux.Listavacia()){
 			procesoAux = colaAux.Listaatender();
@@ -165,6 +159,7 @@ function correrProcesador(recursos){
 			for(var i in recursos){
 				if(recursos[i].nombre == procesoAux.recurso){
 					recursos[i].estado = 1;
+					recursos[i].turnoActual++;
 					break;
 				}
 			}
@@ -233,6 +228,7 @@ function correrProcesador(recursos){
 						recursos[i].estado = 0;
 					}/* si el recurso no esta disponible*/
 					else{
+						this.verificar=1;
 						this.bloqueados.Listainsertar(procesoAux);
 					}
 					break;
@@ -280,7 +276,8 @@ function correrProcesador(recursos){
 			this.suspendidos.Listainsertar(procesoAux);
 		}
 	}
-} else if (!this.listosSRTF.Listavacia()) {
+}
+if (!this.listosSRTF.Listavacia() && this.verificar==0) {
 	while(this.CPU.Listavacia() && !this.listosSRTF.Listavacia()){
 		var procesoAux = this.listosSRTF.Listaatender();
 		/* revisar recursos */
@@ -357,7 +354,8 @@ function correrProcesador(recursos){
 		var process = colaAux.Listaatender();
 		this.listosSRTF.Listainsertar(process);
 	}
-} else if(!this.listosSJF.Listavacia()){
+}
+if(!this.listosSJF.Listavacia() && this.verificar==0){
 		/* mientras la CPU esta disponible y haya algo por antender en listos */
 		while(this.CPU.Listavacia() && !this.listosSJF.Listavacia()){
 			var procesoAux = this.listosSJF.Listaatender();
@@ -385,6 +383,7 @@ function correrProcesador(recursos){
 				process.prioridad = 2;
 				process.enve = parseInt(parseInt(process.t)*this.envejecimiento);
 				this.listosSRTF.Listainsertar2(process);
+				this.tiempoPrimero=this.listosSRTF.ListagetRaiz().proceso.tiempo;
 			}
 			else{
 				colaAux.Listainsertar(process);
@@ -491,17 +490,6 @@ function guardarEstadosProcesos(){
 		this.bloqueados.Listainsertar(procesoAux); //
 	}
 
-	/* cola de terminados */
-	/*while(!this.terminados.Listavacia()){//
-		procesoAux = this.terminados.Listaatender();//
-		contadorAux = this.estados[procesoAux.id].length;
-		this.estados[procesoAux.id][contadorAux] = [this.cronometro, "T"];
-		colaAux.Listainsertar(procesoAux);
-	}
-	while(!colaAux.Listavacia()){
-		procesoAux = colaAux.Listaatender();
-		this.terminados.Listainsertar(procesoAux); //
-	}*/
 }
 
 function calcularrendimiento(){

@@ -3,7 +3,8 @@ function Recurso(nombre, estado){
 	/* atributos de un recurso */
 	this.nombre = nombre;
 	this.estado = estado;
-	this.semaforo = false;
+	this.turno = 0;
+	this.turnoActual = 0;
 
 	/* metodos de un recurso */
 	this.OcuparRecurso = ocuparRecurso;

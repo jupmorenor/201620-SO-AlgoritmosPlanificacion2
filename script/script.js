@@ -381,7 +381,6 @@ function preestablecer(){
 	$("#nombre").val("P"+p);
 	$("#tiempo").val(5 + Math.floor(Math.random() * 20));
 	$("#prioridad").val(Math.floor(Math.random() * 3) + 1);
-	$("#sProcesador").val(1);
 }
 
 function dibujarCola(cola){
